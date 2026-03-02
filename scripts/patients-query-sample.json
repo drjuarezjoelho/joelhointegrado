@@ -1,0 +1,19 @@
+{
+  "query": "SELECT id, name, phone, surgeryDate, surgeryType FROM patients WHERE userId = ? ORDER BY id LIMIT 25",
+  "params": ["ctx.user.id"],
+  "rows_sample": [
+    { "id": "180001", "name": "Valdice Hermano Gomes de Souza", "phone": "(11) 99999-0001", "surgeryDate": "2026-01-06 00:00:00", "surgeryType": "Gonartrose Avançada (ATJ)" },
+    { "id": "210003", "name": "Etelvina Cardoson da Silva", "phone": "74 9997-6817", "surgeryDate": "2026-02-24 00:00:00", "surgeryType": "Artroplastia Total do Joelho (ATJ D)" }
+  ],
+  "backend_rules": [
+    "Sempre filtrar por userId (usuário autenticado). Ex.: WHERE userId = ? com ctx.user.id.",
+    "Nunca listar/editar pacientes sem checar userId para evitar vazamento entre tenants."
+  ],
+  "frontend_types": {
+    "id": "string (numérico, ex. \"180001\") — usar em rotas /pacientes/:id",
+    "name": "string",
+    "phone": "string (formatos variados; normalizar para exibição se quiser máscara)",
+    "surgeryDate": "string | null — formato 'YYYY-MM-DD HH:mm:00' ou null",
+    "surgeryType": "string (pode ser \"\")"
+  }
+}

@@ -1,0 +1,82 @@
+export const koosSubscales = [
+  {
+    name: "Dor",
+    description: "As perguntas a seguir referem-se à dor no joelho que você sentiu durante a última semana.",
+    questions: [
+      { id: "pain1", question: "Com que frequência você sente dor no joelho?" },
+      { id: "pain2", question: "Dor ao girar/torcer o joelho" },
+      { id: "pain3", question: "Dor ao esticar completamente o joelho" },
+      { id: "pain4", question: "Dor ao dobrar completamente o joelho" },
+      { id: "pain5", question: "Dor ao caminhar em superfície plana" },
+      { id: "pain6", question: "Dor ao subir ou descer escadas" },
+      { id: "pain7", question: "Dor à noite enquanto está na cama" },
+      { id: "pain8", question: "Dor ao sentar ou deitar" },
+      { id: "pain9", question: "Dor ao ficar em pé" },
+    ],
+  },
+  {
+    name: "Sintomas",
+    description: "As perguntas a seguir referem-se a outros sintomas no joelho durante a última semana.",
+    questions: [
+      { id: "symptoms1", question: "Você tem inchaço no joelho?" },
+      { id: "symptoms2", question: "Você sente rangido, estalido ou qualquer outro tipo de ruído quando move o joelho?" },
+      { id: "symptoms3", question: "O seu joelho trava ou bloqueia?" },
+      { id: "symptoms4", question: "Você consegue esticar o joelho completamente?" },
+      { id: "symptoms5", question: "Você consegue dobrar o joelho completamente?" },
+      { id: "symptoms6", question: "Quão rígido é o seu joelho logo após acordar de manhã?" },
+      { id: "symptoms7", question: "Quão rígido é o seu joelho após sentar, deitar ou descansar mais tarde no dia?" },
+    ],
+  },
+  {
+    name: "Atividades da Vida Diária",
+    description: "As perguntas a seguir referem-se à sua função física durante a última semana.",
+    questions: [
+      { id: "adl1", question: "Descer escadas" },
+      { id: "adl2", question: "Subir escadas" },
+      { id: "adl3", question: "Levantar-se de uma posição sentada" },
+      { id: "adl4", question: "Ficar em pé" },
+      { id: "adl5", question: "Abaixar-se para pegar um objeto do chão" },
+      { id: "adl6", question: "Caminhar em superfície plana" },
+      { id: "adl7", question: "Entrar/sair do carro" },
+      { id: "adl8", question: "Fazer compras" },
+      { id: "adl9", question: "Colocar meias/meia-calça" },
+      { id: "adl10", question: "Levantar-se da cama" },
+      { id: "adl11", question: "Tirar meias/meia-calça" },
+      { id: "adl12", question: "Deitar na cama (virar-se, manter a posição do joelho)" },
+      { id: "adl13", question: "Entrar/sair da banheira ou chuveiro" },
+      { id: "adl14", question: "Sentar-se" },
+      { id: "adl15", question: "Sentar/levantar do vaso sanitário" },
+      { id: "adl16", question: "Tarefas domésticas pesadas (mover caixas, esfregar pisos, etc.)" },
+      { id: "adl17", question: "Tarefas domésticas leves (cozinhar, tirar pó, etc.)" },
+    ],
+  },
+  {
+    name: "Esportes e Recreação",
+    description: "As perguntas a seguir referem-se à sua função física em um nível mais alto de atividade.",
+    questions: [
+      { id: "sport1", question: "Agachar-se" },
+      { id: "sport2", question: "Correr" },
+      { id: "sport3", question: "Pular" },
+      { id: "sport4", question: "Girar/torcer sobre o joelho lesionado" },
+      { id: "sport5", question: "Ajoelhar-se" },
+    ],
+  },
+  {
+    name: "Qualidade de Vida",
+    description: "As perguntas a seguir referem-se à qualidade de vida relacionada ao joelho.",
+    questions: [
+      { id: "qol1", question: "Com que frequência você está ciente do problema do seu joelho?" },
+      { id: "qol2", question: "Você modificou seu estilo de vida para evitar atividades potencialmente prejudiciais ao joelho?" },
+      { id: "qol3", question: "Quanto você está incomodado com a falta de confiança no seu joelho?" },
+      { id: "qol4", question: "Em geral, quanta dificuldade você tem com o seu joelho?" },
+    ],
+  },
+];
+
+export const koosResponseOptions = [
+  { value: 4, label: "Nenhum(a) / Nunca" },
+  { value: 3, label: "Leve / Raramente" },
+  { value: 2, label: "Moderado(a) / Às vezes" },
+  { value: 1, label: "Grave / Frequentemente" },
+  { value: 0, label: "Extremo(a) / Sempre" },
+];

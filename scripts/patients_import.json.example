@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Nome do Paciente",
+    "age": 45,
+    "gender": "M",
+    "email": "email@exemplo.com",
+    "phone": "(11) 99999-0000",
+    "surgeryDate": "2026-01-15",
+    "surgeryType": "Artroplastia do Joelho (ATJ)",
+    "notes": "Observações opcionais"
+  }
+]

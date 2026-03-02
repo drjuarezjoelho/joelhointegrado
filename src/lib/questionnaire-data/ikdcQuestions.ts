@@ -1,0 +1,107 @@
+export const ikdcQuestions = [
+  {
+    id: 1,
+    question:
+      "Qual é o nível mais alto de atividade que você pode realizar sem dor significativa no joelho?",
+    options: [
+      { value: 4, label: "Atividades muito extenuantes como saltar ou girar em esportes de contato" },
+      { value: 3, label: "Atividades extenuantes como trabalho físico pesado, esqui ou tênis" },
+      { value: 2, label: "Atividades moderadas como trabalho físico moderado, corrida ou jogging" },
+      { value: 1, label: "Atividades leves como caminhar, trabalho doméstico ou jardinagem" },
+      { value: 0, label: "Incapaz de realizar qualquer das atividades acima devido à dor no joelho" },
+    ],
+  },
+  {
+    id: 2,
+    question: "Durante as últimas 4 semanas, ou desde a sua lesão, com que frequência você sentiu dor?",
+    options: [
+      { value: 4, label: "Nunca" },
+      { value: 3, label: "Raramente" },
+      { value: 2, label: "Às vezes" },
+      { value: 1, label: "Frequentemente" },
+      { value: 0, label: "Constantemente" },
+    ],
+  },
+  {
+    id: 3,
+    question: "Se você tem dor, qual é a intensidade?",
+    options: [
+      { value: 10, label: "Sem dor" },
+      { value: 8, label: "Dor leve" },
+      { value: 6, label: "Dor moderada" },
+      { value: 4, label: "Dor intensa" },
+      { value: 2, label: "Dor muito intensa" },
+      { value: 0, label: "Pior dor imaginável" },
+    ],
+  },
+  {
+    id: 4,
+    question: "Durante as últimas 4 semanas, ou desde a sua lesão, o seu joelho estava rígido ou inchado?",
+    options: [
+      { value: 4, label: "Não, de forma alguma" },
+      { value: 3, label: "Levemente" },
+      { value: 2, label: "Moderadamente" },
+      { value: 1, label: "Muito" },
+      { value: 0, label: "Extremamente" },
+    ],
+  },
+  {
+    id: 5,
+    question: "Qual é o nível mais alto de atividade que você pode realizar sem inchaço significativo no joelho?",
+    options: [
+      { value: 4, label: "Atividades muito extenuantes como saltar ou girar em esportes de contato" },
+      { value: 3, label: "Atividades extenuantes como trabalho físico pesado, esqui ou tênis" },
+      { value: 2, label: "Atividades moderadas como trabalho físico moderado, corrida ou jogging" },
+      { value: 1, label: "Atividades leves como caminhar, trabalho doméstico ou jardinagem" },
+      { value: 0, label: "Incapaz de realizar qualquer das atividades acima devido ao inchaço no joelho" },
+    ],
+  },
+  {
+    id: 6,
+    question: "Durante as últimas 4 semanas, ou desde a sua lesão, o seu joelho travou ou bloqueou?",
+    options: [{ value: 1, label: "Não" }, { value: 0, label: "Sim" }],
+  },
+  {
+    id: 7,
+    question: "Qual é o nível mais alto de atividade que você pode realizar sem que o joelho falhe ou ceda?",
+    options: [
+      { value: 4, label: "Atividades muito extenuantes como saltar ou girar em esportes de contato" },
+      { value: 3, label: "Atividades extenuantes como trabalho físico pesado, esqui ou tênis" },
+      { value: 2, label: "Atividades moderadas como trabalho físico moderado, corrida ou jogging" },
+      { value: 1, label: "Atividades leves como caminhar, trabalho doméstico ou jardinagem" },
+      { value: 0, label: "Incapaz de realizar qualquer das atividades acima devido à instabilidade do joelho" },
+    ],
+  },
+  {
+    id: 8,
+    question: "Qual é o nível mais alto de atividade que você pode participar regularmente?",
+    options: [
+      { value: 4, label: "Atividades muito extenuantes como saltar ou girar em esportes de contato" },
+      { value: 3, label: "Atividades extenuantes como trabalho físico pesado, esqui ou tênis" },
+      { value: 2, label: "Atividades moderadas como trabalho físico moderado, corrida ou jogging" },
+      { value: 1, label: "Atividades leves como caminhar, trabalho doméstico ou jardinagem" },
+      { value: 0, label: "Incapaz de realizar qualquer das atividades acima devido ao joelho" },
+    ],
+  },
+  { id: 9, question: "Como o seu joelho afeta a sua capacidade de subir escadas?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  { id: 10, question: "Como o seu joelho afeta a sua capacidade de descer escadas?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  { id: 11, question: "Como o seu joelho afeta a sua capacidade de ajoelhar-se na frente do joelho?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  { id: 12, question: "Como o seu joelho afeta a sua capacidade de agachar-se?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  { id: 13, question: "Como o seu joelho afeta a sua capacidade de sentar-se com o joelho dobrado?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  { id: 14, question: "Como o seu joelho afeta a sua capacidade de levantar-se de uma cadeira?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  { id: 15, question: "Como o seu joelho afeta a sua capacidade de correr em linha reta?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  { id: 16, question: "Como o seu joelho afeta a sua capacidade de saltar e aterrissar na perna afetada?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  { id: 17, question: "Como o seu joelho afeta a sua capacidade de parar e iniciar rapidamente?", options: [{ value: 4, label: "Sem dificuldade" }, { value: 3, label: "Dificuldade mínima" }, { value: 2, label: "Dificuldade moderada" }, { value: 1, label: "Dificuldade extrema" }, { value: 0, label: "Incapaz de fazer" }] },
+  {
+    id: 18,
+    question: "Como você classificaria a função do seu joelho em uma escala de 0 a 10?",
+    options: [
+      { value: 10, label: "10 - Função normal, sem limitações" },
+      { value: 8, label: "8 - Quase normal" },
+      { value: 6, label: "6 - Moderadamente limitado" },
+      { value: 4, label: "4 - Muito limitado" },
+      { value: 2, label: "2 - Extremamente limitado" },
+      { value: 0, label: "0 - Incapaz de realizar atividades diárias" },
+    ],
+  },
+];

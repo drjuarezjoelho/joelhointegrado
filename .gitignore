@@ -1,0 +1,37 @@
+# Dependências
+node_modules/
+
+# Banco de dados local (não versionar dados sensíveis)
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Variáveis de ambiente (chaves, URLs, segredos)
+.env
+.env.local
+.env.*.local
+
+# Build e cache
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# Logs e temporários
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Opcional: descomente se não quiser versionar as imagens de logo
+# public/logo-*.jpg
+# public/logo-*.png
