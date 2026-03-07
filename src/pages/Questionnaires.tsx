@@ -54,7 +54,7 @@ export default function Questionnaires() {
             Marco temporal não encontrado
           </p>
           <Button
-            onClick={() => setLocation("/")}
+            onClick={() => setLocation("/dashboard")}
             variant="outline"
             className="mt-4"
           >

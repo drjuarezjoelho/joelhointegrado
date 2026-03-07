@@ -100,7 +100,7 @@ export default function PatientScores() {
           <Card>
             <CardContent className="p-8 text-center">
               <p className="text-muted-foreground">Paciente não encontrado.</p>
-              <Button onClick={() => setLocation("/")} className="mt-4">
+              <Button onClick={() => setLocation("/dashboard")} className="mt-4">
                 Voltar
               </Button>
             </CardContent>

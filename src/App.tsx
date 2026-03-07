@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
 import PatientForm from "./pages/PatientForm";
 import PatientDetail from "./pages/PatientDetail";
@@ -23,7 +24,8 @@ function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
+      <Route path="/" component={LandingPage} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route path={"/pacientes/novo"} component={PatientForm} />
       <Route path={"/pacientes/:id/editar"} component={PatientForm} />
       <Route path={"/pacientes/:id"} component={PatientDetail} />

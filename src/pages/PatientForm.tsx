@@ -98,13 +98,13 @@ export default function PatientForm() {
           patientId: patientIdNum,
           ...submitData,
         });
-        setLocation("/");
+        setLocation("/dashboard");
       } else {
         const newPatient = await createMutation.mutateAsync(submitData);
         if (newPatient && typeof newPatient === "object" && "id" in newPatient) {
           setLocation(`/consent-history/${(newPatient as { id: number }).id}`);
         } else {
-          setLocation("/");
+          setLocation("/dashboard");
         }
       }
     } catch (error) {
@@ -121,7 +121,7 @@ export default function PatientForm() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setLocation("/")}
+            onClick={() => setLocation("/dashboard")}
             className="gap-2 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -245,7 +245,7 @@ export default function PatientForm() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setLocation("/")}
+                  onClick={() => setLocation("/dashboard")}
                 >
                   Cancelar
                 </Button>

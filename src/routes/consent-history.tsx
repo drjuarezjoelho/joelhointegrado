@@ -71,7 +71,7 @@ export default function ConsentHistoryPage() {
 
   useEffect(() => {
     if (patientQuery.data && patientQuery.data.userId !== user?.id) {
-      setLocation("/");
+      setLocation("/dashboard");
     }
   }, [patientQuery.data, user?.id, setLocation]);
 
@@ -122,7 +122,7 @@ export default function ConsentHistoryPage() {
           <Button
             variant="outline"
             className="mt-4"
-            onClick={() => setLocation("/")}
+            onClick={() => setLocation("/dashboard")}
           >
             Voltar
           </Button>

@@ -122,3 +122,26 @@ CREATE INDEX IF NOT EXISTS idx_koos_responses_timepointId ON koos_responses(time
 CREATE INDEX IF NOT EXISTS idx_pain_assessments_timepointId ON pain_assessments(timepointId);
 CREATE INDEX IF NOT EXISTS idx_reminders_patientId ON reminders(patientId);
 CREATE INDEX IF NOT EXISTS idx_reminders_status ON reminders(status);
+
+CREATE TABLE IF NOT EXISTS students (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT,
+  institution TEXT,
+  specialty TEXT,
+  yearOfResidency TEXT,
+  notes TEXT,
+  createdAt TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS registrations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  type TEXT NOT NULL CHECK (type IN ('patient', 'student')),
+  referenceId INTEGER NOT NULL,
+  emailSent INTEGER DEFAULT 0,
+  createdAt TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_students_email ON students(email);
+CREATE INDEX IF NOT EXISTS idx_registrations_type ON registrations(type);

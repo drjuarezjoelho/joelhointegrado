@@ -37,7 +37,7 @@ import NotificationCenter from "./NotificationCenter";
 import { LogosStrip } from "@/components/LogosStrip";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Pacientes", path: "/" },
+  { icon: LayoutDashboard, label: "Pacientes", path: "/dashboard" },
   { icon: Bell, label: "Lembretes", path: "/lembretes" },
   { icon: BarChart3, label: "Analytics", path: "/analytics" },
   { icon: FileText, label: "TCLE (Pacientes)", path: "/tcle", external: true },
