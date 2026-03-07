@@ -121,7 +121,7 @@ export default function LandingPage() {
     if (createdPatientId) {
       setLocation(`/pacientes/${createdPatientId}`);
     } else {
-      setLocation("/");
+      setLocation("/dashboard");
     }
   };
 
@@ -147,7 +147,7 @@ export default function LandingPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setLocation("/")}
+            onClick={() => setLocation("/dashboard")}
             className="border-primary/30 text-primary hover:bg-primary/10"
           >
             Acesso Interno

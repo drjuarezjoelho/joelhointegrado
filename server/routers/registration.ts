@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Resend } from "resend";
 import { router, publicProcedure } from "../trpc";
 import { getDb } from "../db";
 
@@ -22,13 +23,19 @@ const studentRegistrationSchema = z.object({
   notes: z.string().optional(),
 });
 
+function getResendClient(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return null;
+  return new Resend(apiKey);
+}
+
 async function sendRegistrationEmail(
   to: string,
   name: string,
   type: "patient" | "student"
-) {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
+): Promise<{ sent: boolean; id?: string; reason?: string }> {
+  const resend = getResendClient();
+  if (!resend) {
     console.warn("[Resend] RESEND_API_KEY not set — skipping email");
     return { sent: false, reason: "no_api_key" };
   }
@@ -40,6 +47,8 @@ async function sendRegistrationEmail(
       ? "C.I.J. - Cadastro de Paciente Confirmado"
       : "C.I.J. - Cadastro de Aluno Confirmado";
 
+  const year = new Date().getFullYear();
+
   const html =
     type === "patient"
       ? `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0B1426;color:#E8EDF4;border-radius:12px;">
@@ -47,42 +56,47 @@ async function sendRegistrationEmail(
             <h1 style="color:#2E86C1;font-size:24px;margin:0;">C.I.J. - Centro Integrado de Joelho</h1>
             <p style="color:#8BA3C4;font-size:14px;">Dr. Juarez Sebastian - Ortopedia e Traumatologia</p>
           </div>
-          <h2 style="color:#E8EDF4;font-size:20px;">Olá, ${name}!</h2>
+          <h2 style="color:#E8EDF4;font-size:20px;">Ol&aacute;, ${name}!</h2>
           <p style="color:#CBD5E1;line-height:1.6;">Seu cadastro como <strong>paciente</strong> foi realizado com sucesso no sistema C.I.J.</p>
-          <p style="color:#CBD5E1;line-height:1.6;">Em breve você receberá informações sobre os questionários pré-operatórios e o TCLE (Termo de Consentimento).</p>
+          <p style="color:#CBD5E1;line-height:1.6;">Em breve voc&ecirc; receber&aacute; informa&ccedil;&otilde;es sobre os question&aacute;rios pr&eacute;-operat&oacute;rios e o TCLE (Termo de Consentimento).</p>
           <div style="background:#112240;border-radius:8px;padding:16px;margin:20px 0;border-left:4px solid #2E86C1;">
-            <p style="color:#8BA3C4;font-size:13px;margin:0;">Se tiver dúvidas, entre em contato com a equipe C.I.J.</p>
+            <p style="color:#8BA3C4;font-size:13px;margin:0;">Se tiver d&uacute;vidas, entre em contato com a equipe C.I.J.</p>
           </div>
-          <p style="color:#5A6B82;font-size:12px;text-align:center;margin-top:32px;">© ${new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.) - Juazeiro/Petrolina</p>
+          <p style="color:#5A6B82;font-size:12px;text-align:center;margin-top:32px;">&copy; ${year} Centro Integrado de Joelho (C.I.J.) - Juazeiro/Petrolina</p>
         </div>`
       : `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0B1426;color:#E8EDF4;border-radius:12px;">
           <div style="text-align:center;margin-bottom:24px;">
             <h1 style="color:#2E86C1;font-size:24px;margin:0;">C.I.J. - Centro Integrado de Joelho</h1>
-            <p style="color:#8BA3C4;font-size:14px;">Residência em Ortopedia e Traumatologia</p>
+            <p style="color:#8BA3C4;font-size:14px;">Resid&ecirc;ncia em Ortopedia e Traumatologia</p>
           </div>
-          <h2 style="color:#E8EDF4;font-size:20px;">Olá, ${name}!</h2>
+          <h2 style="color:#E8EDF4;font-size:20px;">Ol&aacute;, ${name}!</h2>
           <p style="color:#CBD5E1;line-height:1.6;">Seu cadastro como <strong>aluno</strong> foi realizado com sucesso no sistema C.I.J.</p>
-          <p style="color:#CBD5E1;line-height:1.6;">Você terá acesso ao acompanhamento de pacientes e questionários clínicos da residência.</p>
+          <p style="color:#CBD5E1;line-height:1.6;">Voc&ecirc; ter&aacute; acesso ao acompanhamento de pacientes e question&aacute;rios cl&iacute;nicos da resid&ecirc;ncia.</p>
           <div style="background:#112240;border-radius:8px;padding:16px;margin:20px 0;border-left:4px solid #2E86C1;">
-            <p style="color:#8BA3C4;font-size:13px;margin:0;">Bem-vindo à equipe! Em breve compartilharemos mais informações.</p>
+            <p style="color:#8BA3C4;font-size:13px;margin:0;">Bem-vindo &agrave; equipe! Em breve compartilharemos mais informa&ccedil;&otilde;es.</p>
           </div>
-          <p style="color:#5A6B82;font-size:12px;text-align:center;margin-top:32px;">© ${new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.) - Juazeiro/Petrolina</p>
+          <p style="color:#5A6B82;font-size:12px;text-align:center;margin-top:32px;">&copy; ${year} Centro Integrado de Joelho (C.I.J.) - Juazeiro/Petrolina</p>
         </div>`;
 
   try {
-    const { Resend } = await import("resend");
-    const resend = new Resend(apiKey);
     const result = await resend.emails.send({
       from: fromEmail,
       to,
       subject,
       html,
     });
-    console.log(`[Resend] Email sent to ${to}:`, result);
+
+    if (result.error) {
+      console.error("[Resend] API error:", result.error);
+      return { sent: false, reason: result.error.message };
+    }
+
+    console.log(`[Resend] Email sent to ${to}, id=${result.data?.id}`);
     return { sent: true, id: result.data?.id };
-  } catch (error) {
-    console.error("[Resend] Failed to send email:", error);
-    return { sent: false, reason: "send_failed" };
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : "unknown";
+    console.error("[Resend] Failed to send email:", msg);
+    return { sent: false, reason: msg };
   }
 }
 
@@ -91,6 +105,14 @@ export const registrationRouter = router({
     .input(patientRegistrationSchema)
     .mutation(async ({ input }) => {
       const db = getDb();
+
+      const existing = db
+        .prepare("SELECT id FROM patients WHERE email = ?")
+        .get(input.email) as { id: number } | undefined;
+
+      if (existing) {
+        return { id: existing.id, emailSent: false, alreadyExists: true };
+      }
 
       const result = db
         .prepare(
@@ -125,13 +147,25 @@ export const registrationRouter = router({
         ).run(patientId);
       }
 
-      return { id: patientId, emailSent: emailResult.sent };
+      return {
+        id: patientId,
+        emailSent: emailResult.sent,
+        alreadyExists: false,
+      };
     }),
 
   registerStudent: publicProcedure
     .input(studentRegistrationSchema)
     .mutation(async ({ input }) => {
       const db = getDb();
+
+      const existing = db
+        .prepare("SELECT id FROM students WHERE email = ?")
+        .get(input.email) as { id: number } | undefined;
+
+      if (existing) {
+        return { id: existing.id, emailSent: false, alreadyExists: true };
+      }
 
       const result = db
         .prepare(
@@ -166,6 +200,10 @@ export const registrationRouter = router({
         ).run(studentId);
       }
 
-      return { id: studentId, emailSent: emailResult.sent };
+      return {
+        id: studentId,
+        emailSent: emailResult.sent,
+        alreadyExists: false,
+      };
     }),
 });
