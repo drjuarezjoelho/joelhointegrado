@@ -23,7 +23,7 @@ function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path={"/?"} component={Dashboard} />
+      <Route path="/" component={Dashboard} />
       <Route path={"/pacientes/novo"} component={PatientForm} />
       <Route path={"/pacientes/:id/editar"} component={PatientForm} />
       <Route path={"/pacientes/:id"} component={PatientDetail} />

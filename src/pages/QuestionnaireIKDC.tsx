@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useLocation, useSearch } from "wouter";
+import { useLocation } from "wouter";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -326,8 +326,8 @@ const ikdcQuestions = [
 ];
 
 export default function QuestionnaireIKDC() {
-  const [, setLocation] = useLocation();
-  const searchString = useSearch();
+  const [location, setLocation] = useLocation();
+  const searchString = location.split('?')[1] || '';
   const params = new URLSearchParams(searchString);
   const patientIdFromUrl = params.get("patientId");
 
