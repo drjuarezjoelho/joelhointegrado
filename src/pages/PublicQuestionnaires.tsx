@@ -241,22 +241,7 @@ export default function PublicQuestionnaires() {
             <p className="text-xs text-muted-foreground uppercase tracking-widest">
               Parceiros e Apoio
             </p>
-            <div className="flex items-center justify-center gap-8 flex-wrap">
-              <div className="group transition-all duration-300">
-                <img
-                  src="/logo-cij.jpg"
-                  alt="Centro Integrado de Joelho - C.I.J."
-                  className="h-20 w-auto object-contain opacity-90 group-hover:opacity-100 transition-all duration-300 rounded-lg"
-                />
-              </div>
-              <div className="group transition-all duration-300">
-                <img
-                  src="/logo-dr-juarez.png"
-                  alt="Dr. Juarez Sebastian - Ortopedia e Traumatologia"
-                  className="h-20 w-auto object-contain opacity-90 group-hover:opacity-100 transition-all duration-300"
-                />
-              </div>
-            </div>
+            <LogosStrip variant="footer" size="lg" showSote showResidencia />
             <div className="text-center text-muted-foreground text-sm pt-4 border-t border-border w-full">
               <p>
                 © {new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.)

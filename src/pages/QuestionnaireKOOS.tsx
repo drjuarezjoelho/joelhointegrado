@@ -522,6 +522,13 @@ export default function QuestionnaireKOOS() {
             </Button>
           )}
         </div>
+
+        <footer className="mt-10 flex flex-col items-center gap-3 pb-8">
+          <LogosStrip variant="footer" size="md" showResidencia />
+          <p className="text-xs text-white/40 text-center">
+            © {new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.) - Juazeiro/Petrolina
+          </p>
+        </footer>
       </div>
     </div>
   );

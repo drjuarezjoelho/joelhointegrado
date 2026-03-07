@@ -161,7 +161,7 @@ export default function QuestionnaireEVA() {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto pb-8">
         <Card className="border-0 shadow-lg bg-card">
           <CardHeader>
             <CardTitle className="text-foreground">
@@ -256,6 +256,13 @@ export default function QuestionnaireEVA() {
             </Button>
           </CardContent>
         </Card>
+
+        <footer className="mt-10 flex flex-col items-center gap-3">
+          <LogosStrip variant="footer" size="md" showResidencia />
+          <p className="text-xs text-white/40 text-center">
+            © {new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.) - Juazeiro/Petrolina
+          </p>
+        </footer>
       </div>
     </div>
   );

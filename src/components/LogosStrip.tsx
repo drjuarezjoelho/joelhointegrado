@@ -1,6 +1,10 @@
 /**
  * Faixa de logos para uso no layout e nas páginas principais.
- * Arquivos em public/: logo-cij.jpg (ou .png), logo-dr-juarez.png, logo-sote.png (opcional).
+ * Arquivos em public/:
+ *   logo-cij.jpg (ou .png) - Centro Integrado de Joelho
+ *   logo-dr-juarez.png     - Dr. Juarez Sebastian
+ *   logo-sote.png          - Hospital SOTE (parceiro)
+ *   logo-residencia.png    - Residência Ortopedia e Traumatologia (fundo transparente)
  */
 type LogosStripVariant = "sidebar" | "header" | "footer";
 type LogosStripSize = "sm" | "md" | "lg";
@@ -8,11 +12,18 @@ type LogosStripSize = "sm" | "md" | "lg";
 const LOGO_CIJ = "/logo-cij.jpg";
 const LOGO_DR_JUAREZ = "/logo-dr-juarez.png";
 const LOGO_SOTE = "/logo-sote.png";
+const LOGO_RESIDENCIA = "/logo-residencia.png";
 
 const sizeMap: Record<LogosStripSize, string> = {
-  sm: "h-8",   // ~32px – sidebar colapsado, questionários
-  md: "h-12",  // ~48px – header páginas públicas, barra superior
-  lg: "h-16",  // ~64px – footer, destaque
+  sm: "h-8",
+  md: "h-12",
+  lg: "h-16",
+};
+
+const residenciaSizeMap: Record<LogosStripSize, string> = {
+  sm: "h-10",
+  md: "h-16",
+  lg: "h-20",
 };
 
 const variantToSize: Record<LogosStripVariant, LogosStripSize> = {
@@ -29,10 +40,9 @@ const gapMap: Record<LogosStripSize, string> = {
 
 interface LogosStripProps {
   variant?: LogosStripVariant;
-  /** Sobrescreve o tamanho definido pela variant */
   size?: LogosStripSize;
-  /** Incluir logo SOTE (parceiro) – útil no footer */
   showSote?: boolean;
+  showResidencia?: boolean;
   className?: string;
 }
 
@@ -40,10 +50,12 @@ export function LogosStrip({
   variant = "header",
   size: sizeProp,
   showSote = false,
+  showResidencia = false,
   className = "",
 }: LogosStripProps) {
   const size = sizeProp ?? variantToSize[variant];
   const imgClass = `${sizeMap[size]} w-auto object-contain`;
+  const residenciaClass = `${residenciaSizeMap[size]} w-auto object-contain`;
   const gapClass = gapMap[size];
 
   return (
@@ -67,6 +79,13 @@ export function LogosStrip({
           src={LOGO_SOTE}
           alt="Hospital SOTE - Parceiro"
           className={imgClass}
+        />
+      )}
+      {showResidencia && (
+        <img
+          src={LOGO_RESIDENCIA}
+          alt="Residência Ortopedia e Traumatologia 2024 - Hospital SOTE / Instituto Viver"
+          className={residenciaClass}
         />
       )}
     </div>
