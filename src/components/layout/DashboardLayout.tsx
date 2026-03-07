@@ -176,17 +176,17 @@ function DashboardLayoutContent({
       <div className="relative" ref={sidebarRef}>
         <Sidebar
           collapsible="icon"
-          className="border-r-0"
+          className="border-r border-sidebar-border/50"
           disableTransition={isResizing}
         >
-          <SidebarHeader className="min-h-16 justify-center py-3">
+          <SidebarHeader className="min-h-16 justify-center py-4 border-b border-sidebar-border/30">
             <div className="flex items-center gap-3 px-2 transition-all w-full">
               <button
                 onClick={toggleSidebar}
-                className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0"
+                className="h-8 w-8 flex items-center justify-center hover:bg-sidebar-accent rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring shrink-0"
                 aria-label="Toggle navigation"
               >
-                <PanelLeft className="h-4 w-4 text-muted-foreground" />
+                <PanelLeft className="h-4 w-4 text-sidebar-foreground/60" />
               </button>
               {!isCollapsed ? (
                 <div className="flex-1 min-w-0 flex justify-center">
@@ -200,8 +200,8 @@ function DashboardLayoutContent({
             </div>
           </SidebarHeader>
 
-          <SidebarContent className="gap-0">
-            <SidebarMenu className="px-2 py-1">
+          <SidebarContent className="gap-0 py-2">
+            <SidebarMenu className="px-2 py-1 space-y-0.5">
               {menuItems.map((item) => {
                 const isActive = location === item.path;
                 return (
@@ -210,10 +210,14 @@ function DashboardLayoutContent({
                       isActive={isActive}
                       onClick={() => handleMenuClick(item)}
                       tooltip={item.label}
-                      className="h-10 transition-all font-normal"
+                      className={`h-10 transition-all font-normal rounded-lg ${
+                        isActive
+                          ? "bg-sidebar-primary/15 text-sidebar-primary font-medium"
+                          : "hover:bg-sidebar-accent/60 text-sidebar-foreground/80 hover:text-sidebar-foreground"
+                      }`}
                     >
                       <item.icon
-                        className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
+                        className={`h-4 w-4 ${isActive ? "text-sidebar-primary" : ""}`}
                       />
                       <span>{item.label}</span>
                     </SidebarMenuButton>
@@ -223,20 +227,20 @@ function DashboardLayoutContent({
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarFooter className="p-3">
+          <SidebarFooter className="p-3 border-t border-sidebar-border/30">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-3 rounded-lg px-1 py-1 hover:bg-accent/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <Avatar className="h-9 w-9 border shrink-0">
-                    <AvatarFallback className="text-xs font-medium">
+                <button className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-sidebar-accent/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring">
+                  <Avatar className="h-9 w-9 border border-sidebar-border/50 shrink-0">
+                    <AvatarFallback className="text-xs font-medium bg-sidebar-primary/20 text-sidebar-primary">
                       {user?.name?.charAt(0).toUpperCase() ?? "?"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-                    <p className="text-sm font-medium truncate leading-none">
+                    <p className="text-sm font-medium truncate leading-none text-sidebar-foreground">
                       {user?.name ?? "-"}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate mt-1.5">
+                    <p className="text-xs text-sidebar-foreground/50 truncate mt-1.5">
                       {user?.email ?? "-"}
                     </p>
                   </div>
@@ -248,7 +252,7 @@ function DashboardLayoutContent({
                   className="cursor-pointer text-destructive focus:text-destructive"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sign out</span>
+                  <span>Sair</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -265,30 +269,29 @@ function DashboardLayoutContent({
       </div>
 
       <SidebarInset>
-        <div className="flex border-b h-14 items-center justify-between bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
-          <div className="flex items-center gap-2">
+        <div className="flex border-b border-border/50 h-14 items-center justify-between bg-background/80 px-4 md:px-6 backdrop-blur-md supports-[backdrop-filter]:backdrop-blur-md sticky top-0 z-40">
+          <div className="flex items-center gap-3">
             {isMobile && (
-              <SidebarTrigger className="h-9 w-9 rounded-lg bg-background" />
+              <SidebarTrigger className="h-9 w-9 rounded-lg" />
             )}
             {isMobile && activeMenuItem && (
-              <span className="tracking-tight text-foreground text-sm">
+              <span className="font-medium text-foreground text-sm">
                 {activeMenuItem.label}
               </span>
             )}
           </div>
           <NotificationCenter />
         </div>
-        <main className="flex-1 p-4">{children}</main>
+        <main className="flex-1 p-4 md:p-6">{children}</main>
 
-        {/* Footer com Logos */}
-        <footer className="border-t bg-muted/30">
+        <footer className="border-t border-border/40 bg-muted/20">
           <div className="px-6 py-8">
-            <div className="flex flex-col items-center gap-6">
-              <p className="text-xs text-muted-foreground uppercase tracking-widest">
+            <div className="flex flex-col items-center gap-5">
+              <p className="text-[11px] text-muted-foreground/70 uppercase tracking-[0.2em] font-medium">
                 Parceiros e Apoio
               </p>
               <LogosStrip variant="footer" size="lg" showSote />
-              <p className="text-xs text-muted-foreground text-center mt-2">
+              <p className="text-xs text-muted-foreground/60 text-center mt-1">
                 © {new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.)
                 - Juazeiro/Petrolina
               </p>

@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@source "../src";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -43,74 +45,74 @@
 }
 
 :root {
-  --primary: #00b4a0;
+  --radius: 0.625rem;
+  --primary: #1565C0;
   --primary-foreground: #ffffff;
-  --sidebar-primary: #00b4a0;
-  --sidebar-primary-foreground: #ffffff;
-  --chart-1: #00b4a0;
-  --chart-2: #0088aa;
-  --chart-3: #006699;
-  --chart-4: #004488;
-  --chart-5: #002255;
-  --radius: 0.65rem;
-  --background: #001a4d;
-  --foreground: #ffffff;
-  --card: #003366;
-  --card-foreground: #ffffff;
-  --popover: #003366;
-  --popover-foreground: #ffffff;
-  --secondary: #004488;
-  --secondary-foreground: #ffffff;
-  --muted: #002255;
-  --muted-foreground: #b0c4de;
-  --accent: #00b4a0;
-  --accent-foreground: #001a4d;
-  --destructive: #ff6b6b;
+  --background: #F5F7FA;
+  --foreground: #0D1B4A;
+  --card: #ffffff;
+  --card-foreground: #0D1B4A;
+  --popover: #ffffff;
+  --popover-foreground: #0D1B4A;
+  --secondary: #E8F0FE;
+  --secondary-foreground: #0D1B4A;
+  --muted: #EEF2F7;
+  --muted-foreground: #5A6B82;
+  --accent: #E3F2FD;
+  --accent-foreground: #0D1B4A;
+  --destructive: #DC2626;
   --destructive-foreground: #ffffff;
-  --border: #00b4a0;
-  --input: #003366;
-  --ring: #00b4a0;
-  --sidebar: #001a4d;
-  --sidebar-foreground: #ffffff;
-  --sidebar-accent: #00b4a0;
-  --sidebar-accent-foreground: #001a4d;
-  --sidebar-border: #00b4a0;
-  --sidebar-ring: #00b4a0;
+  --border: #D1D9E6;
+  --input: #E2E8F0;
+  --ring: #1565C0;
+  --chart-1: #2E86C1;
+  --chart-2: #1565C0;
+  --chart-3: #5DADE2;
+  --chart-4: #85C1E9;
+  --chart-5: #0D47A1;
+  --sidebar: #0D1B4A;
+  --sidebar-foreground: #E8EDF4;
+  --sidebar-primary: #2E86C1;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #14397D;
+  --sidebar-accent-foreground: #E8EDF4;
+  --sidebar-border: #1E3A5F;
+  --sidebar-ring: #2E86C1;
 }
 
 .dark {
-  --primary: #00b4a0;
+  --primary: #2E86C1;
   --primary-foreground: #ffffff;
-  --sidebar-primary: #00b4a0;
-  --sidebar-primary-foreground: #ffffff;
-  --background: #001a4d;
-  --foreground: #ffffff;
-  --card: #003366;
-  --card-foreground: #ffffff;
-  --popover: #003366;
-  --popover-foreground: #ffffff;
-  --secondary: #004488;
-  --secondary-foreground: #ffffff;
-  --muted: #002255;
-  --muted-foreground: #b0c4de;
-  --accent: #00b4a0;
-  --accent-foreground: #001a4d;
-  --destructive: #ff6b6b;
+  --background: #0B1426;
+  --foreground: #E8EDF4;
+  --card: #112240;
+  --card-foreground: #E8EDF4;
+  --popover: #112240;
+  --popover-foreground: #E8EDF4;
+  --secondary: #1A3A6B;
+  --secondary-foreground: #CBD5E1;
+  --muted: #162D50;
+  --muted-foreground: #8BA3C4;
+  --accent: #1565C0;
+  --accent-foreground: #ffffff;
+  --destructive: #E74C3C;
   --destructive-foreground: #ffffff;
-  --border: #00b4a0;
-  --input: #003366;
-  --ring: #00b4a0;
-  --chart-1: #00b4a0;
-  --chart-2: #0088aa;
-  --chart-3: #006699;
-  --chart-4: #004488;
-  --chart-5: #002255;
-  --sidebar: #001a4d;
-  --sidebar-foreground: #ffffff;
-  --sidebar-accent: #00b4a0;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #00b4a0;
-  --sidebar-ring: #00b4a0;
+  --border: #1E3A5F;
+  --input: #1A3050;
+  --ring: #2E86C1;
+  --chart-1: #2E86C1;
+  --chart-2: #5DADE2;
+  --chart-3: #1565C0;
+  --chart-4: #85C1E9;
+  --chart-5: #0D47A1;
+  --sidebar: #091020;
+  --sidebar-foreground: #E8EDF4;
+  --sidebar-primary: #2E86C1;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #162D50;
+  --sidebar-accent-foreground: #E8EDF4;
+  --sidebar-border: #1E3A5F;
+  --sidebar-ring: #2E86C1;
 }
 
 @layer base {
@@ -118,7 +120,12 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),

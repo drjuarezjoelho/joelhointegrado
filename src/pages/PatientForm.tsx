@@ -122,21 +122,22 @@ export default function PatientForm() {
             variant="ghost"
             size="sm"
             onClick={() => setLocation("/")}
-            className="gap-2"
+            className="gap-2 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar
           </Button>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {isNew ? "Novo Paciente" : "Editar Paciente"}
-            </h1>
-          </div>
+        </div>
+
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold">
+            {isNew ? "Novo Paciente" : "Editar Paciente"}
+          </h1>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Dados do Paciente</CardTitle>
+            <CardTitle className="text-lg">Dados do Paciente</CardTitle>
             <CardDescription>
               Preencha as informações básicas do paciente
             </CardDescription>
@@ -173,7 +174,7 @@ export default function PatientForm() {
                   <select
                     id="gender"
                     {...register("gender")}
-                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
+                    className="w-full h-9 px-3 py-2 border border-input rounded-md bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1"
                   >
                     <option value="M">Masculino</option>
                     <option value="F">Feminino</option>

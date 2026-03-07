@@ -230,10 +230,10 @@ export default function Dashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <header className="flex items-center justify-between">
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Pacientes</h1>
-            <p className="text-muted-foreground mt-2">
+            <h1 className="text-2xl sm:text-3xl font-bold">Pacientes</h1>
+            <p className="text-sm text-muted-foreground mt-1">
               Gerenciar e acompanhar pacientes do projeto C.I.J.
             </p>
           </div>
@@ -312,13 +312,15 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <h2 className="text-2xl font-bold text-foreground mt-8 mb-4">
-          Cirurgias de Joelho Especializadas
-        </h2>
-        <p className="text-muted-foreground mb-6">
-          Artroplastia, artroscopia e reconstrução de ligamentos em Juazeiro e
-          Petrolina.
-        </p>
+        <div className="rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border border-primary/10 p-5 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-foreground">
+            Cirurgias de Joelho Especializadas
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Artroplastia, artroscopia e reconstrução de ligamentos em Juazeiro e
+            Petrolina.
+          </p>
+        </div>
 
         {isLoading ? (
           <Card>
@@ -446,33 +448,33 @@ export default function Dashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-2 px-4 font-semibold">Nome</th>
-                      <th className="text-left py-2 px-4 font-semibold">
+                    <tr className="border-b border-border/50">
+                      <th className="text-left py-3 px-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Nome</th>
+                      <th className="text-left py-3 px-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">
                         Telefone
                       </th>
-                      <th className="text-left py-2 px-4 font-semibold">
+                      <th className="text-left py-3 px-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">
                         Data Cirurgia
                       </th>
-                      <th className="text-left py-2 px-4 font-semibold">
+                      <th className="text-left py-3 px-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">
                         Tipo Cirurgia
                       </th>
-                      <th className="text-left py-2 px-4 font-semibold">
+                      <th className="text-left py-3 px-4 font-semibold text-xs uppercase tracking-wider text-muted-foreground">
                         Ações
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-border/30">
                     {patients.map((patient) => (
                       <tr
                         key={patient.id}
-                        className="border-b hover:bg-muted/50"
+                        className="hover:bg-muted/30 transition-colors"
                       >
                         <td className="py-3 px-4">{patient.name}</td>
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-2">
                             {patient.phone ? (
-                              <span className="text-teal-400">
+                              <span className="text-primary">
                                 ({patient.phone.slice(0, 2)}){" "}
                                 {patient.phone.slice(2, 7)}-
                                 {patient.phone.slice(7)}
@@ -639,16 +641,18 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         ) : (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-              <Bell className="h-12 w-12 text-muted-foreground mb-4" />
+          <Card className="border-dashed">
+            <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="rounded-full bg-primary/10 p-4 mb-5">
+                <Bell className="h-8 w-8 text-primary" />
+              </div>
               <h3 className="text-lg font-semibold mb-2">
                 Nenhum paciente cadastrado
               </h3>
-              <p className="text-muted-foreground mb-4">
-                Comece adicionando pacientes ao sistema.
+              <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+                Comece adicionando pacientes ao sistema para gerenciar cirurgias e questionários.
               </p>
-              <Button onClick={() => setLocation("/pacientes/novo")}>
+              <Button onClick={() => setLocation("/pacientes/novo")} size="lg">
                 Adicionar Paciente
               </Button>
             </CardContent>
