@@ -95,7 +95,23 @@ function toDateString(value: unknown): string | null {
     const s = excelSerialToDateString(value);
     if (s) return s;
   }
-  const d = new Date(String(value));
+  const text = String(value).trim();
+  const ddmmyyyy = text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (ddmmyyyy) {
+    const day = Number(ddmmyyyy[1]);
+    const month = Number(ddmmyyyy[2]);
+    const year = Number(ddmmyyyy[3]);
+    const d = new Date(Date.UTC(year, month - 1, day));
+    if (
+      d.getUTCFullYear() === year &&
+      d.getUTCMonth() === month - 1 &&
+      d.getUTCDate() === day
+    ) {
+      return d.toISOString().slice(0, 10);
+    }
+    return null;
+  }
+  const d = new Date(text);
   return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
 }
 
@@ -145,7 +161,7 @@ async function importFromXls() {
   const headers = (data[0] as unknown[]).map((h) => String(h ?? ""));
   const headerMap = buildHeaderMap(headers);
 
-  if (!headerMap.name) {
+  if (headerMap.name == null) {
     console.error(
       "Nenhuma coluna de nome encontrada. Cabeçalhos vistos:",
       headers.join(" | ")
