@@ -290,7 +290,7 @@ function DashboardLayoutContent({
               <p className="text-[11px] text-muted-foreground/70 uppercase tracking-[0.2em] font-medium">
                 Parceiros e Apoio
               </p>
-              <LogosStrip variant="footer" size="lg" showSote showResidencia />
+              <LogosStrip variant="footer" size="lg" showSote showViver showResidencia />
               <p className="text-xs text-muted-foreground/60 text-center mt-1">
                 © {new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.)
                 - Juazeiro/Petrolina

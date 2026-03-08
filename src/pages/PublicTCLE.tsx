@@ -726,7 +726,7 @@ export default function PublicTCLE() {
             <p className="text-xs text-muted-foreground uppercase tracking-widest">
               Parceiros e Apoio
             </p>
-            <LogosStrip variant="footer" size="lg" showSote showResidencia />
+            <LogosStrip variant="footer" size="lg" showSote showViver showResidencia />
             <div className="text-center text-muted-foreground text-sm pt-4 border-t border-border w-full">
               <p>
                 © {new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.)

@@ -225,7 +225,7 @@ export default function LandingPage() {
 
       <footer className="border-t border-white/5 py-8">
         <div className="flex flex-col items-center gap-4">
-          <LogosStrip variant="footer" size="md" showSote showResidencia />
+          <LogosStrip variant="footer" size="md" showSote showViver showResidencia />
           <p className="text-xs text-white/30 text-center">
             © {new Date().getFullYear()} Centro Integrado de Joelho (C.I.J.) -
             Juazeiro/Petrolina
