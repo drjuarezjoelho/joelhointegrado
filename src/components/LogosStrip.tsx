@@ -9,7 +9,7 @@
 type LogosStripVariant = "sidebar" | "header" | "footer";
 type LogosStripSize = "sm" | "md" | "lg";
 
-const LOGO_CIJ = "/logo-cij.jpg";
+const LOGO_CIJ = "/logo-cij.png";
 const LOGO_DR_JUAREZ = "/logo-dr-juarez.png";
 const LOGO_SOTE = "/logo-sote.png";
 const LOGO_RESIDENCIA = "/logo-residencia.png";
