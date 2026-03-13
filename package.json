@@ -52,7 +52,7 @@
     "streamdown": "^1.1.0",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.4",
-    "wouter": "^2.14.0",
+    "wouter": "^3.9.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {
