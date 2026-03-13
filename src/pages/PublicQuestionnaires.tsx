@@ -14,12 +14,17 @@ import {
   Activity,
   ThermometerSun,
 } from "lucide-react";
-import { useLocation, useSearch } from "wouter";
+import { useLocation } from "wouter";
 import { LogosStrip } from "@/components/LogosStrip";
+
+function useSearchString(): string {
+  if (typeof window === "undefined") return "";
+  return window.location.search.slice(1);
+}
 
 export default function PublicQuestionnaires() {
   const [, setLocation] = useLocation();
-  const searchString = useSearch();
+  const searchString = useSearchString();
   const params = new URLSearchParams(searchString);
   const patientId = params.get("patientId");
 
