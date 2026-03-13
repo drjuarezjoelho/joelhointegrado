@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useLocation, useSearch } from "wouter";
+import { useLocation } from "wouter";
 import { toast } from "sonner";
 import { ArrowLeft, ThermometerSun, CheckCircle2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
@@ -23,7 +23,7 @@ function getPatientIdFromContext(): string | null {
 
 export default function QuestionnaireEVA() {
   const [, setLocation] = useLocation();
-  const searchString = useSearch();
+  const searchString = typeof window !== "undefined" ? window.location.search : "";
   const params = new URLSearchParams(searchString);
   const patientIdFromUrl = params.get("patientId");
 
