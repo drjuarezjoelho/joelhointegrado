@@ -1,6 +1,9 @@
 # Dependências
 node_modules/
 
+# Extração bruta de PDFs (contém identificação de pacientes — gere localmente)
+src/data/surgical-audit-raw.json
+
 # Banco de dados local (não versionar dados sensíveis)
 data/
 *.db

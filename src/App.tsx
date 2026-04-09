@@ -18,12 +18,13 @@ import QuestionnaireKOOS from "./pages/QuestionnaireKOOS";
 import PatientScores from "./pages/PatientScores";
 import Reminders from "./pages/Reminders";
 import Analytics from "./pages/Analytics";
+import SurgicalAudit from "./pages/SurgicalAudit";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path={"/?"} component={Dashboard} />
+      <Route path={"/"} component={Dashboard} />
       <Route path={"/pacientes/novo"} component={PatientForm} />
       <Route path={"/pacientes/:id/editar"} component={PatientForm} />
       <Route path={"/pacientes/:id"} component={PatientDetail} />
@@ -38,6 +39,7 @@ function Router() {
       <Route path={"/pacientes/:id/scores"} component={PatientScores} />
       <Route path={"/lembretes"} component={Reminders} />
       <Route path={"/analytics"} component={Analytics} />
+      <Route path={"/auditoria-cirurgica"} component={SurgicalAudit} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

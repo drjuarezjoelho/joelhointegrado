@@ -15,7 +15,10 @@ export const patientsRouter = router({
     const rows = db
       .prepare(
         `SELECT id, name, phone, email, surgeryDate, surgeryType
-         FROM patients WHERE userId = ? ORDER BY id DESC LIMIT 500`
+         FROM patients
+         WHERE userId = ?
+         ORDER BY (surgeryDate IS NULL) ASC, surgeryDate DESC, id DESC
+         LIMIT 500`
       )
       .all(ctx.userId) as Array<{
       id: number;

@@ -38,10 +38,14 @@ const COLORS = ["#14b8a6", "#003366", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"
 
 export default function Analytics() {
   const { user } = useAuth();
+  const queriesEnabled = Boolean(user);
   const { data: patients, isLoading: patientsLoading } =
-    trpc.patients.list.useQuery();
+    trpc.patients.list.useQuery(undefined, { enabled: queriesEnabled });
   const { data: remindersStatus } =
-    trpc.patients.getRemindersStatus.useQuery(undefined, { retry: false });
+    trpc.patients.getRemindersStatus.useQuery(undefined, {
+      retry: false,
+      enabled: queriesEnabled,
+    });
 
   const stats = useMemo(() => {
     if (!patients || patients.length === 0) {
@@ -152,7 +156,7 @@ export default function Analytics() {
     ].filter((item) => item.value > 0);
   }, [remindersStatus]);
 
-  if (patientsLoading) {
+  if (queriesEnabled && patientsLoading) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center py-12">
@@ -165,6 +169,15 @@ export default function Analytics() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
+        {!user && import.meta.env.DEV && (
+          <Card className="border-amber-500/40 bg-amber-500/5">
+            <CardContent className="pt-6 text-sm text-muted-foreground">
+              Modo local sem sessão: os gráficos usam valores vazios. Inicie{" "}
+              <code className="text-xs">npm run server</code> e faça login para
+              carregar dados reais.
+            </CardContent>
+          </Card>
+        )}
         <header>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
             <BarChart3 className="h-8 w-8" />

@@ -48,11 +48,12 @@ npm install
 # Subir o banco (SQLite) – opcional, cria pasta data/ e tabelas
 npm run db:push
 
-# Servidor backend (API tRPC)
-npm run server
+# Subir frontend + backend juntos (recomendado)
+npm run dev:all
 
-# Em outro terminal: frontend (Vite)
-npm run dev
+# (Opcional) subir separado em 2 terminais:
+# npm run server
+# npm run dev
 ```
 
 Acesse **http://localhost:5173**. O front consome a API em `/api/trpc` (proxy configurado no Vite).
@@ -62,6 +63,7 @@ Acesse **http://localhost:5173**. O front consome a API em `/api/trpc` (proxy co
 | Comando | Descrição |
 |--------|-----------|
 | `npm run dev` | Frontend em modo desenvolvimento |
+| `npm run dev:all` | Frontend + API local em um comando |
 | `npm run server` | Backend Express + tRPC |
 | `npm run build` | Build de produção (front) |
 | `npm run db:push` | Aplica schema no SQLite |

@@ -249,7 +249,7 @@ export default function PublicQuestionnaires() {
             <div className="flex items-center justify-center gap-8 flex-wrap">
               <div className="group transition-all duration-300">
                 <img
-                  src="/logo-cij.jpg"
+                  src="/logo-cij.png"
                   alt="Centro Integrado de Joelho - C.I.J."
                   className="h-20 w-auto object-contain opacity-90 group-hover:opacity-100 transition-all duration-300 rounded-lg"
                 />
@@ -259,6 +259,13 @@ export default function PublicQuestionnaires() {
                   src="/logo-dr-juarez.png"
                   alt="Dr. Juarez Sebastian - Ortopedia e Traumatologia"
                   className="h-20 w-auto object-contain opacity-90 group-hover:opacity-100 transition-all duration-300"
+                  onError={(e) => {
+                    const el = e.currentTarget;
+                    if (el.dataset.fallback !== "1") {
+                      el.dataset.fallback = "1";
+                      el.src = "/Editedimage_1765660418828.png";
+                    }
+                  }}
                 />
               </div>
             </div>
