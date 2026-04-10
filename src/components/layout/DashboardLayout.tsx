@@ -73,7 +73,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [pathname, setLocation] = useLocation();
+  const [pathname] = useLocation();
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY);
     return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
@@ -114,21 +114,11 @@ export default function DashboardLayout({
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
-                <Button
-                  size="lg"
-                  className="w-full"
-                  type="button"
-                  onClick={() => setLocation("/questionarios")}
-                >
-                  Questionários e acompanhamento
+                <Button size="lg" className="w-full" asChild>
+                  <a href="/questionarios">Questionários e acompanhamento</a>
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  type="button"
-                  onClick={() => setLocation("/tcle")}
-                >
-                  Termo de consentimento (TCLE)
+                <Button variant="outline" className="w-full" asChild>
+                  <a href="/tcle">Termo de consentimento (TCLE)</a>
                 </Button>
               </CardContent>
             </Card>
