@@ -70,6 +70,17 @@ Acesse **http://localhost:5173**. O front consome a API em `/api/trpc` (proxy co
 | `npm run db:studio` | Drizzle Studio (visualizar banco) |
 | `npm run db:seed` | Popula banco com dados de exemplo |
 
+### Integração Braintrust (Vercel)
+
+Se você instalou o Braintrust via Vercel Integrations, configure no ambiente do projeto:
+
+- `BRAINTRUST_API_KEY` (obrigatória para enviar traces/logs)
+- `BRAINTRUST_PROJECT_ID` (recomendada)
+- `BRAINTRUST_PROJECT_NAME` (opcional, padrão: `cadastro-ci`)
+
+No backend (`server/trpc.ts`) as procedures tRPC já estão instrumentadas.  
+Sem `BRAINTRUST_API_KEY`, a aplicação continua funcionando normalmente (observabilidade desativada).
+
 ---
 
 ## Documentação
