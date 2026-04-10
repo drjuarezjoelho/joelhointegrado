@@ -81,6 +81,12 @@ Se você instalou o Braintrust via Vercel Integrations, configure no ambiente do
 No backend (`server/trpc.ts`) as procedures tRPC já estão instrumentadas.  
 Sem `BRAINTRUST_API_KEY`, a aplicação continua funcionando normalmente (observabilidade desativada).
 
+### Paciente vs equipe (login)
+
+- **Pacientes / acompanhantes:** rotas públicas (`/questionarios`, `/tcle`, etc.) sem OAuth.
+- **Equipe clínica:** o botão “Entrar com conta” só aparece se existirem `VITE_OAUTH_PORTAL_URL` e `VITE_APP_ID` no build. Sem isso, o ecrã explica a configuração em vez de um botão que recarrega `/`.
+- **API em produção:** o deploy estático na Vercel não inclui o Express; é preciso expor `/api/trpc` (serverless, outro serviço ou proxy) para a equipa obter sessão via `auth.me`.
+
 ---
 
 ## Documentação

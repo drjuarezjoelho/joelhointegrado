@@ -20,7 +20,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { getLoginUrl } from "@/const";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getLoginUrl, isOAuthConfigured } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
 import {
   LayoutDashboard,
@@ -66,7 +73,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [pathname] = useLocation();
+  const [pathname, setLocation] = useLocation();
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY);
     return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
@@ -86,26 +93,91 @@ export default function DashboardLayout({
 
   if (!devDashboardSemSessao && !user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Sign in to continue
+      <div className="flex min-h-screen items-center justify-center bg-background p-6">
+        <div className="flex w-full max-w-3xl flex-col gap-8">
+          <div className="space-y-2 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight">
+              Centro Integrado de Joelho (C.I.J.)
             </h1>
-            <p className="text-sm text-muted-foreground text-center max-w-sm">
-              Access to this dashboard requires authentication. Continue to
-              launch the login flow.
+            <p className="text-sm text-muted-foreground">
+              Escolha o tipo de acesso. Pacientes e acompanhantes usam os
+              formulários públicos; a equipe clínica usa área restrita.
             </p>
           </div>
-          <Button
-            onClick={() => {
-              window.location.href = getLoginUrl();
-            }}
-            size="lg"
-            className="w-full shadow-lg hover:shadow-xl transition-all"
-          >
-            Sign in
-          </Button>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card className="border-border/80">
+              <CardHeader>
+                <CardTitle className="text-lg">Paciente ou acompanhante</CardTitle>
+                <CardDescription>
+                  Formulários, TCLE e rotas públicas — sem login da equipe.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-2">
+                <Button
+                  size="lg"
+                  className="w-full"
+                  type="button"
+                  onClick={() => setLocation("/questionarios")}
+                >
+                  Questionários e acompanhamento
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  type="button"
+                  onClick={() => setLocation("/tcle")}
+                >
+                  Termo de consentimento (TCLE)
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/80">
+              <CardHeader>
+                <CardTitle className="text-lg">Equipe clínica</CardTitle>
+                <CardDescription>
+                  Cadastro de pacientes, lembretes, analytics e auditoria.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3">
+                {isOAuthConfigured() ? (
+                  <Button
+                    size="lg"
+                    className="w-full shadow-lg"
+                    onClick={() => {
+                      window.location.href = getLoginUrl();
+                    }}
+                  >
+                    Entrar com conta
+                  </Button>
+                ) : (
+                  <div className="space-y-3 text-sm text-muted-foreground">
+                    <p>
+                      O login da equipe (portal OAuth) ainda não está configurado
+                      neste ambiente. Nas definições de build da Vercel, defina{" "}
+                      <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                        VITE_OAUTH_PORTAL_URL
+                      </code>{" "}
+                      e{" "}
+                      <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                        VITE_APP_ID
+                      </code>
+                      .
+                    </p>
+                    <p className="text-xs">
+                      A API em{" "}
+                      <code className="rounded bg-muted px-1 py-0.5">
+                        /api/trpc
+                      </code>{" "}
+                      também precisa de estar disponível (servidor Node ou
+                      funções serverless no mesmo domínio).
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     );

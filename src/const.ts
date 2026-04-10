@@ -7,9 +7,17 @@ export const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 /** Message returned by API when the user is not authenticated (401). */
 export const UNAUTHED_ERR_MSG = "UNAUTHORIZED";
 
+/** True when Vite env has OAuth portal + app id (login da equipe). */
+export function isOAuthConfigured(): boolean {
+  return Boolean(
+    import.meta.env.VITE_OAUTH_PORTAL_URL && import.meta.env.VITE_APP_ID
+  );
+}
+
 /**
  * Generate login URL at runtime so redirect URI reflects the current origin.
- * Uses OAuth portal when VITE_OAUTH_PORTAL_URL and VITE_APP_ID are set; otherwise returns "/".
+ * Uses OAuth portal when VITE_OAUTH_PORTAL_URL and VITE_APP_ID are set.
+ * If missing, returns "/" — evite usar como única ação de "entrar" (não muda de página na raiz).
  */
 export function getLoginUrl(): string {
   const oauthPortalUrl = import.meta.env.VITE_OAUTH_PORTAL_URL;
