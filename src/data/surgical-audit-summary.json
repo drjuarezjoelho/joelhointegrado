@@ -1,0 +1,22 @@
+{
+  "extractedAt": null,
+  "source": "stub — substitua localmente com npm run audit:extract",
+  "yearsAvailable": [],
+  "byYear": {},
+  "series": {
+    "juarezKneeSurgeryCountByYear": [],
+    "juarezSurgeryCountByYear": [],
+    "teamKneeSlotsByYear": [],
+    "teamSurgerySlotsByYear": []
+  },
+  "projection2026": {
+    "juarezKneeSurgerySlots": {
+      "linearOnCalendarYear": 0,
+      "averageLast3Years": 0,
+      "recommendedPlanningRange": { "low": 0, "high": 0 },
+      "methodsNote": "Dados completos são gerados localmente; este ficheiro evita falha de build em CI."
+    }
+  },
+  "cijDocumentsMeta": [],
+  "suggestionsForApproval": []
+}

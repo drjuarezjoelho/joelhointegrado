@@ -1,0 +1,151 @@
+# Deploy na Vercel: preview em PRs e produção em push para main.
+#
+# Secrets (Settings → Secrets and variables → Actions):
+#   VERCEL_TOKEN        — https://vercel.com/account/tokens
+#   VERCEL_ORG_ID       — Project Settings → General, ou campo teamId em .vercel/project.json
+#   VERCEL_PROJECT_ID   — id do projeto na Vercel (project.json)
+#
+# PRs de forks não têm acesso aos secrets; use branch no mesmo repositório ou workflow_dispatch.
+
+name: Vercel Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Destino do deploy manual"
+        required: true
+        default: "preview"
+        type: choice
+        options:
+          - preview
+          - production
+
+concurrency:
+  group: vercel-deploy-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  precheck:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build validation (fail fast)
+        run: npm run build
+
+  deploy:
+    needs: precheck
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@50.37.3
+
+      - name: Pull Vercel env (Preview)
+        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'preview')
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Pull Vercel env (Production)
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'production')
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Vercel build (Preview)
+        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'preview')
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Vercel build (Production)
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'production')
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Vercel deploy (Preview)
+        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'preview')
+        id: deploy_preview
+        run: |
+          set -euo pipefail
+          OUT=$(vercel deploy --prebuilt --yes --token="${{ secrets.VERCEL_TOKEN }}" 2>&1)
+          echo "$OUT"
+          URL=$(printf '%s\n' "$OUT" | grep -oE 'https://[^ ]+' | tail -n1 || true)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          if [ -z "$URL" ]; then
+            echo "::error::Could not parse preview URL from vercel deploy output"
+            exit 1
+          fi
+
+      - name: Find Vercel preview comment
+        if: github.event_name == 'pull_request' && steps.deploy_preview.outputs.url != ''
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "<!-- vercel-preview -->"
+
+      - name: Comment PR with Preview URL
+        if: github.event_name == 'pull_request' && steps.deploy_preview.outputs.url != ''
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!-- vercel-preview -->
+            **Preview Vercel:** ${{ steps.deploy_preview.outputs.url }}
+
+      - name: Vercel deploy (Production)
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'production')
+        id: deploy_prod
+        run: |
+          set -euo pipefail
+          OUT=$(vercel deploy --prebuilt --prod --yes --token="${{ secrets.VERCEL_TOKEN }}" 2>&1)
+          echo "$OUT"
+          URL=$(printf '%s\n' "$OUT" | grep -oE 'https://[^ ]+' | tail -n1 || true)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          if [ -z "$URL" ]; then
+            echo "::error::Could not parse production URL from vercel deploy output"
+            exit 1
+          fi
+
+      - name: Deployment summary
+        if: always() && (steps.deploy_preview.outputs.url != '' || steps.deploy_prod.outputs.url != '')
+        run: |
+          {
+            echo "## Deploy"
+            [ -n "${{ steps.deploy_preview.outputs.url }}" ] && echo "- **Preview:** ${{ steps.deploy_preview.outputs.url }}"
+            [ -n "${{ steps.deploy_prod.outputs.url }}" ] && echo "- **Production:** ${{ steps.deploy_prod.outputs.url }}"
+          } >> "$GITHUB_STEP_SUMMARY"

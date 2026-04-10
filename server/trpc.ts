@@ -1,6 +1,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { getDb } from "./db";
+import { traceTrpcProcedure } from "./observability/braintrust";
 
 export const createContext = async (opts: { req?: unknown; res?: unknown }) => {
   const db = getDb();
@@ -15,7 +16,16 @@ const t = initTRPC.context<Context>().create({
 });
 
 export const router = t.router;
-export const publicProcedure = t.procedure;
+const observabilityMiddleware = t.middleware(async ({ ctx, next, path, type }) =>
+  traceTrpcProcedure({
+    path,
+    type,
+    userId: ctx.userId ?? null,
+    execute: () => next(),
+  })
+);
+
+export const publicProcedure = t.procedure.use(observabilityMiddleware);
 
 const requireUser = t.middleware(({ ctx, next }) => {
   if (!ctx.userId) throw new TRPCError({ code: "UNAUTHORIZED" });

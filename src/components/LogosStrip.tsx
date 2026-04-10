@@ -1,13 +1,40 @@
 /**
  * Faixa de logos para uso no layout e nas páginas principais.
- * Arquivos em public/: logo-cij.jpg (ou .png), logo-dr-juarez.png, logo-sote.png (opcional).
+ * Ficheiros em public/: ver LOGOS-README.txt (logo-cij.png, logo-dr-juarez.png, logo-sote.png).
  */
+import { useState } from "react";
+
 type LogosStripVariant = "sidebar" | "header" | "footer";
 type LogosStripSize = "sm" | "md" | "lg";
 
-const LOGO_CIJ = "/logo-cij.jpg";
-const LOGO_DR_JUAREZ = "/logo-dr-juarez.png";
+/** Ordem: ficheiro canónico → fallbacks que existem no repositório. */
+const LOGO_CIJ_SRCS = ["/logo-cij.png", "/logo-cij.png.jpg", "/logo-cij.jpg"];
+const LOGO_DR_SRCS = [
+  "/logo-dr-juarez.png",
+  "/Editedimage_1765660418828.png",
+];
 const LOGO_SOTE = "/logo-sote.png";
+
+function LogoWithFallback({
+  sources,
+  alt,
+  className,
+}: {
+  sources: readonly string[];
+  alt: string;
+  className: string;
+}) {
+  const [i, setI] = useState(0);
+  if (i >= sources.length) return null;
+  return (
+    <img
+      src={sources[i]}
+      alt={alt}
+      className={className}
+      onError={() => setI((n) => n + 1)}
+    />
+  );
+}
 
 const sizeMap: Record<LogosStripSize, string> = {
   sm: "h-8",   // ~32px – sidebar colapsado, questionários
@@ -52,19 +79,19 @@ export function LogosStrip({
       role="img"
       aria-label="Centro Integrado de Joelho, Dr. Juarez Sebastian e parceiros"
     >
-      <img
-        src={LOGO_CIJ}
+      <LogoWithFallback
+        sources={LOGO_CIJ_SRCS}
         alt="Centro Integrado de Joelho - C.I.J."
         className={imgClass}
       />
-      <img
-        src={LOGO_DR_JUAREZ}
+      <LogoWithFallback
+        sources={LOGO_DR_SRCS}
         alt="Dr. Juarez Sebastian - Ortopedia e Traumatologia - Cirurgia do Joelho"
         className={imgClass}
       />
       {showSote && (
-        <img
-          src={LOGO_SOTE}
+        <LogoWithFallback
+          sources={[LOGO_SOTE]}
           alt="Hospital SOTE - Parceiro"
           className={imgClass}
         />

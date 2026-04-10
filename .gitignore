@@ -1,8 +1,12 @@
 # Dependências
 node_modules/
 
-# Banco de dados local (não versionar dados sensíveis)
-data/
+# Extração bruta de PDFs (contém identificação de pacientes — gere localmente)
+src/data/surgical-audit-raw.json
+
+# Banco de dados local na raiz do repo (não versionar dados sensíveis)
+# Use /data/ e não "data/" — senão o Git ignora também src/data/ (JSONs da app).
+/data/
 *.db
 *.db-journal
 *.db-wal

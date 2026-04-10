@@ -1,0 +1,12 @@
+{
+  "generatedAt": null,
+  "sourcePdfs": {},
+  "parcial2026": {},
+  "consolidatedFinal": {
+    "yearsAvailable": [],
+    "teamKneeByYear": [],
+    "teamSurgeryByYear": [],
+    "juarezKneeByYear": [],
+    "note": "Stub para build em CI/Vercel. Gere relatório completo com npm run audit:report."
+  }
+}

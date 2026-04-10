@@ -32,18 +32,26 @@ import {
 } from "@/components/ui/table";
 
 export default function Reminders() {
-  useAuth();
+  const { user } = useAuth();
+  const queriesEnabled = Boolean(user);
   const {
     data: remindersStatus,
     isLoading: statusLoading,
     refetch: refetchStatus,
-  } = trpc.patients.getRemindersStatus.useQuery();
+  } = trpc.patients.getRemindersStatus.useQuery(undefined, {
+    enabled: queriesEnabled,
+  });
   const {
     data: allReminders,
     isLoading: remindersLoading,
     refetch: refetchReminders,
-  } = trpc.patients.getAllReminders.useQuery();
-  const { data: whatsappStatus } = trpc.patients.checkWhatsAppStatus.useQuery();
+  } = trpc.patients.getAllReminders.useQuery(undefined, {
+    enabled: queriesEnabled,
+  });
+  const { data: whatsappStatus } = trpc.patients.checkWhatsAppStatus.useQuery(
+    undefined,
+    { enabled: queriesEnabled }
+  );
 
   const createAllRemindersMutation =
     trpc.patients.createAllReminders.useMutation({
@@ -156,6 +164,15 @@ export default function Reminders() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
+        {!user && import.meta.env.DEV && (
+          <Card className="border-amber-500/40 bg-amber-500/5">
+            <CardContent className="pt-6 text-sm text-muted-foreground">
+              Modo local sem sessão: os lembretes não são carregados. Inicie{" "}
+              <code className="text-xs">npm run server</code> e faça login para
+              usar a API.
+            </CardContent>
+          </Card>
+        )}
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
@@ -244,7 +261,7 @@ export default function Reminders() {
           <CardContent className="flex flex-wrap gap-4">
             <Button
               onClick={() => createAllRemindersMutation.mutate()}
-              disabled={createAllRemindersMutation.isPending}
+              disabled={createAllRemindersMutation.isPending || !user}
             >
               {createAllRemindersMutation.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -257,7 +274,9 @@ export default function Reminders() {
             <Button
               onClick={() => processRemindersMutation.mutate()}
               disabled={
-                processRemindersMutation.isPending || !whatsappStatus?.configured
+                processRemindersMutation.isPending ||
+                !whatsappStatus?.configured ||
+                !user
               }
               className="bg-green-600 hover:bg-green-700"
             >
@@ -271,6 +290,7 @@ export default function Reminders() {
 
             <Button
               variant="outline"
+              disabled={!user}
               onClick={() => {
                 refetchStatus();
                 refetchReminders();
@@ -334,7 +354,7 @@ export default function Reminders() {
                                 reminderId: reminder.id,
                               })
                             }
-                            disabled={cancelReminderMutation.isPending}
+                            disabled={cancelReminderMutation.isPending || !user}
                           >
                             <XCircle className="h-4 w-4 text-red-500" />
                           </Button>

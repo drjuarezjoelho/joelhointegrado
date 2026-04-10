@@ -4,6 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Tipografia alinhada ao logo CIJ (geométrica, institucional) */
+  --font-sans: "Montserrat", "Inter", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -42,75 +44,86 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/**
+ * Paleta harmonizada com o logo CIJ: azul-marinho profundo, teal/ciano de destaque, branco.
+ * Tokens --cij-* documentam a referência visual; shadcn usa --primary, --background, etc.
+ */
 :root {
-  --primary: #00b4a0;
+  --cij-navy-deep: #061a2e;
+  --cij-navy: #0c2744;
+  --cij-navy-card: #0f3557;
+  --cij-teal: #00b8aa;
+  --cij-teal-muted: #009688;
+  --cij-frost: #e8f4fc;
+
+  --primary: var(--cij-teal);
   --primary-foreground: #ffffff;
-  --sidebar-primary: #00b4a0;
+  --sidebar-primary: var(--cij-teal);
   --sidebar-primary-foreground: #ffffff;
-  --chart-1: #00b4a0;
-  --chart-2: #0088aa;
-  --chart-3: #006699;
-  --chart-4: #004488;
-  --chart-5: #002255;
+  --chart-1: var(--cij-teal);
+  --chart-2: #26a69a;
+  --chart-3: #00897b;
+  --chart-4: #00695c;
+  --chart-5: #004d40;
   --radius: 0.65rem;
-  --background: #001a4d;
+  --background: var(--cij-navy-deep);
   --foreground: #ffffff;
-  --card: #003366;
+  --card: var(--cij-navy-card);
   --card-foreground: #ffffff;
-  --popover: #003366;
+  --popover: var(--cij-navy-card);
   --popover-foreground: #ffffff;
-  --secondary: #004488;
+  --secondary: var(--cij-navy);
   --secondary-foreground: #ffffff;
-  --muted: #002255;
-  --muted-foreground: #b0c4de;
-  --accent: #00b4a0;
-  --accent-foreground: #001a4d;
-  --destructive: #ff6b6b;
+  --muted: #0a2238;
+  --muted-foreground: #a8c5dc;
+  --accent: var(--cij-teal);
+  --accent-foreground: #061a2e;
+  --destructive: #e85d5d;
   --destructive-foreground: #ffffff;
-  --border: #00b4a0;
-  --input: #003366;
-  --ring: #00b4a0;
-  --sidebar: #001a4d;
+  --border: color-mix(in srgb, var(--cij-teal) 45%, transparent);
+  --input: var(--cij-navy-card);
+  --ring: var(--cij-teal);
+  --sidebar: var(--cij-navy-deep);
   --sidebar-foreground: #ffffff;
-  --sidebar-accent: #00b4a0;
-  --sidebar-accent-foreground: #001a4d;
-  --sidebar-border: #00b4a0;
-  --sidebar-ring: #00b4a0;
+  --sidebar-accent: var(--cij-teal);
+  --sidebar-accent-foreground: #061a2e;
+  --sidebar-border: color-mix(in srgb, var(--cij-teal) 40%, transparent);
+  --sidebar-ring: var(--cij-teal);
 }
 
 .dark {
-  --primary: #00b4a0;
+  --primary: var(--cij-teal);
   --primary-foreground: #ffffff;
-  --sidebar-primary: #00b4a0;
+  --sidebar-primary: var(--cij-teal);
   --sidebar-primary-foreground: #ffffff;
-  --background: #001a4d;
+  --background: var(--cij-navy-deep);
   --foreground: #ffffff;
-  --card: #003366;
+  --card: var(--cij-navy-card);
   --card-foreground: #ffffff;
-  --popover: #003366;
+  --popover: var(--cij-navy-card);
   --popover-foreground: #ffffff;
-  --secondary: #004488;
+  --secondary: var(--cij-navy);
   --secondary-foreground: #ffffff;
-  --muted: #002255;
-  --muted-foreground: #b0c4de;
-  --accent: #00b4a0;
-  --accent-foreground: #001a4d;
-  --destructive: #ff6b6b;
+  --muted: #0a2238;
+  --muted-foreground: #a8c5dc;
+  --accent: var(--cij-teal);
+  --accent-foreground: #ffffff;
+  --destructive: #e85d5d;
   --destructive-foreground: #ffffff;
-  --border: #00b4a0;
-  --input: #003366;
-  --ring: #00b4a0;
-  --chart-1: #00b4a0;
-  --chart-2: #0088aa;
-  --chart-3: #006699;
-  --chart-4: #004488;
-  --chart-5: #002255;
-  --sidebar: #001a4d;
+  --border: color-mix(in srgb, var(--cij-teal) 45%, transparent);
+  --input: var(--cij-navy-card);
+  --ring: var(--cij-teal);
+  --chart-1: var(--cij-teal);
+  --chart-2: #26a69a;
+  --chart-3: #00897b;
+  --chart-4: #00695c;
+  --chart-5: #004d40;
+  --sidebar: var(--cij-navy-deep);
   --sidebar-foreground: #ffffff;
-  --sidebar-accent: #00b4a0;
+  --sidebar-accent: var(--cij-teal);
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #00b4a0;
-  --sidebar-ring: #00b4a0;
+  --sidebar-border: color-mix(in srgb, var(--cij-teal) 40%, transparent);
+  --sidebar-ring: var(--cij-teal);
 }
 
 @layer base {
@@ -118,7 +131,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
