@@ -5,7 +5,8 @@
 
 [build]
 builder = "RAILPACK"
-buildCommand = "npm ci && npm run build"
+# rm -rf node_modules evita árvore suja em rebuilds com cache; cache Vite está em .vite-cache (vite.config)
+buildCommand = "rm -rf node_modules && npm ci && npm run build"
 
 [deploy]
 startCommand = "npm start"

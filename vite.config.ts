@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  /** Fora de node_modules — evita EBUSY no `npm ci` (Docker/Railway) ao apagar node_modules/.vite */
+  cacheDir: path.resolve(__dirname, ".vite-cache"),
   plugins: [tailwindcss(), react()],
   resolve: {
     alias: {

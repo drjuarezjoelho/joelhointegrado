@@ -22,6 +22,7 @@ dist/
 *.zip
 build/
 .vite/
+.vite-cache/
 *.tsbuildinfo
 
 # Logs e temporários
