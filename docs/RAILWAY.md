@@ -1,26 +1,23 @@
 # Deploy no Railway
 
-O repositório inclui [`railway.toml`](../railway.toml) (build + `npm start` + health em `/api/health`).  
-O [`Dockerfile`](../deploy/Dockerfile) **não** está na raiz de propósito: a Railway prioriza um `Dockerfile` na raiz e ignoraria esse fluxo; para Docker local use `docker build -f deploy/Dockerfile`.
+O [`railway.toml`](../railway.toml) usa **`builder = DOCKERFILE`** e [`deploy/Dockerfile`](../deploy/Dockerfile): o build corre dentro de uma imagem limpa (sem o overlay problemático do Railpack/`rm node_modules`).  
+Health: `GET /api/health`. Arranque: `npm start` (o `CMD` do Dockerfile é equivalente).
 
 ## 1. Criar o serviço
 
 1. Aceda a [railway.app](https://railway.app) e inicie sessão.
 2. **New project** → **Deploy from GitHub repo** → escolha `drjuarezjoelho/joelhointegrado` (branch `main`).
-3. A Railway deteta Node e aplica o `railway.toml`.
+3. A Railway lê o `railway.toml` e faz **build da imagem** a partir de `deploy/Dockerfile`.
 
-### Comando de build (se o deploy falhar com `EBUSY` / “Device or resource busy” em `node_modules/.vite`)
+### Build no painel (importante)
 
-No log do deploy, o comando deve ser **`npm run build:deploy`** (script que limpa `node_modules` de forma segura e corre `npm ci` + `npm run build`).
+- **Não** defina “Custom Build Command” nem Railpack manual — deixe o Docker fazer o trabalho.
+- Se ainda tiver um comando antigo (`npm ci`, `rm -rf node_modules`, `npm run build:deploy`), **apague-o** e faça **Redeploy**.
+- **Root Directory** deve estar vazio (raiz do repositório).
 
-**Não use** no painel o comando manual `rm -rf node_modules && npm ci && npm run build`: no overlay da Railway o `rm -rf` pode falhar em `node_modules/.vite` (“Device or resource busy”). O script do repo usa **`mv` para `/tmp`** quando necessário.
+### Fallback local (só desenvolvimento / CI sem Docker)
 
-Se vir **`npm ci && npm run build`** ou **`rm -rf node_modules && ...`** sem passar por `build:deploy`, o painel está a **sobrescrever** o repositório:
-
-1. Serviço → **Settings** → **Build** (ou **Deploy** → **Build**).
-2. **Apague** o “Custom Build Command” / deixe em branco **ou** escreva **só**: `npm run build:deploy`.
-3. Confirme que **Root Directory** está vazio (raiz do repo) — se apontar para uma pasta errada, o `railway.toml` não é lido.
-4. **Redeploy**.
+`npm run build:deploy` continua disponível no `package.json` para quem não usa Docker.
 
 ## 2. Variáveis de ambiente (obrigatórias)
 
@@ -77,7 +74,7 @@ Sem volume, a base em `/app/data` pode perder-se entre deploys.
 
 | Sintoma | Causa provável |
 |---------|----------------|
-| `EBUSY` / `rmdir ... node_modules/.vite` ou `.../.cache` | Ferramentas criam cache dentro de `node_modules`; o `npm ci` tenta apagar tudo e pode falhar. O script `build:deploy` corre `rm -rf node_modules` em Linux antes do `npm ci`. Atualize o `main`, faça **Redeploy**; se persistir, no serviço → **Settings** → **Clear build cache** (ou equivalente) e volte a fazer deploy. |
+| `EBUSY` / “Device or resource busy” em `node_modules` | O deploy deve usar **Dockerfile** (`railway.toml` no `main`). Apague qualquer **Custom Build Command** no serviço e **Clear build cache** uma vez se um deploy antigo Railpack ficou preso. |
 | Build sem `VITE_GOOGLE_CLIENT_ID` | Botão “Entrar” não aparece ou OAuth incompleto — definir no **build** e voltar a fazer deploy. |
 | `redirect_uri_mismatch` | URI no Google Cloud não coincide **caracter a caracter** com o URL Railway. |
 | 502 / health falha | `npm start` ou `PORT`; confira logs do deploy. |

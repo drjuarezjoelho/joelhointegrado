@@ -1,12 +1,11 @@
 # Railway — https://railway.app
-# Guia passo a passo: docs/RAILWAY.md
-# Dockerfile na raiz faria a Railway ignorar este ficheiro; use deploy/Dockerfile para Docker manual.
+# Guia: docs/RAILWAY.md
+# Build com Docker (imagem limpa) — evita EBUSY/overlayfs do Railpack + rm node_modules.
 # Volume opcional: monte em /app/data e SQLITE_DB_PATH=/app/data/cij.db
 
 [build]
-builder = "RAILPACK"
-# Um único script npm — se o painel Railway tiver comando antigo, defina: npm run build:deploy
-buildCommand = "npm run build:deploy"
+builder = "DOCKERFILE"
+dockerfilePath = "deploy/Dockerfile"
 
 [deploy]
 startCommand = "npm start"

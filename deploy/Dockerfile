@@ -1,6 +1,7 @@
-# Imagem opcional (não está na raiz para a Railway usar Nixpacks/Railpack + railway.toml).
+# Build de produção (Railway usa este ficheiro via railway.toml → builder DOCKERFILE).
+# Evita falhas de `rm`/`npm ci` no overlayfs do Railpack.
 #
-# Build:
+# Build local:
 #   docker build -f deploy/Dockerfile --build-arg VITE_GOOGLE_CLIENT_ID=xxx -t cadastro-ci .
 #
 # Run:
@@ -25,9 +26,9 @@ ARG VITE_API_URL
 ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 ENV VITE_API_URL=$VITE_API_URL
 
+ENV NODE_ENV=production
 RUN npm run build
 
-ENV NODE_ENV=production
 ENV SERVE_STATIC=1
 
 EXPOSE 3000

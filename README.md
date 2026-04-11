@@ -128,9 +128,9 @@ Ficheiros incluídos no repositório:
 
 | Ficheiro | Uso |
 |----------|-----|
-| `railway.toml` | [Railway](https://railway.app): build `npm ci && npm run build`, start `npm start`, health `/api/health`. |
+| `railway.toml` | [Railway](https://railway.app): build via **`deploy/Dockerfile`**, start `npm start`, health `/api/health`. |
 | `render.yaml` | [Render](https://render.com): Blueprint com os mesmos comandos. |
-| `deploy/Dockerfile` | Docker manual (`docker build -f deploy/Dockerfile`); não está na raiz para a Railway usar `railway.toml`. |
+| `deploy/Dockerfile` | Imagem de produção (Railway e `docker build -f deploy/Dockerfile`). |
 | [docs/RAILWAY.md](docs/RAILWAY.md) | Guia passo a passo para Railway. |
 
 ---
