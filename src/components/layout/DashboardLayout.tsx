@@ -144,24 +144,27 @@ export default function DashboardLayout({
                 ) : (
                   <div className="space-y-3 text-sm text-muted-foreground">
                     <p>
-                      O login da equipe (portal OAuth) ainda não está configurado
-                      neste ambiente. Nas definições de build da Vercel, defina{" "}
+                      O login Google da equipe ainda não está configurado no
+                      frontend. Na Vercel (ou no <code className="text-xs">.env</code>
+                      ), defina{" "}
                       <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                        VITE_OAUTH_PORTAL_URL
+                        VITE_GOOGLE_CLIENT_ID
                       </code>{" "}
-                      e{" "}
+                      (Client ID OAuth — o mesmo valor pode ser repetido no
+                      servidor como{" "}
                       <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                        VITE_APP_ID
+                        GOOGLE_CLIENT_ID
                       </code>
-                      .
+                      ).
                     </p>
                     <p className="text-xs">
-                      A API em{" "}
-                      <code className="rounded bg-muted px-1 py-0.5">
-                        /api/trpc
-                      </code>{" "}
-                      também precisa de estar disponível (servidor Node ou
-                      funções serverless no mesmo domínio).
+                      No servidor são também necessários{" "}
+                      <code className="rounded bg-muted px-1">GOOGLE_CLIENT_SECRET</code>
+                      ,{" "}
+                      <code className="rounded bg-muted px-1">SESSION_SECRET</code>{" "}
+                      e a API a responder em{" "}
+                      <code className="rounded bg-muted px-1">/api</code> (ver
+                      README).
                     </p>
                   </div>
                 )}

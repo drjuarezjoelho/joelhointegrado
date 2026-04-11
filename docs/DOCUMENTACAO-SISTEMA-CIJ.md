@@ -280,8 +280,8 @@ Acesso ao banco: `const db = getDb();` e depois `db.prepare("SELECT ...").all(..
 
 ### Constantes e login (src/const.ts)
 
-- `getLoginUrl()`: URL de login (OAuth se VITE_OAUTH_PORTAL_URL e VITE_APP_ID; senão `"/"`).
-- `UNAUTHED_ERR_MSG`: mensagem de 401; main.tsx redireciona para `getLoginUrl()` quando o erro é esse.
+- `getLoginUrl()`: inicia OAuth Google em `/api/oauth/google` (requer `VITE_GOOGLE_CLIENT_ID` no cliente e credenciais no servidor).
+- `UNAUTHED_ERR_MSG`: mensagem de 401; `main.tsx` redireciona para `getLoginUrl()` quando configurado.
 
 ### Tema (src/index.css)
 

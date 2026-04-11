@@ -18,9 +18,8 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
   if (!isUnauthorized) return;
 
   if (!isOAuthConfigured()) return;
-  const url = getLoginUrl();
-  if (url === "/" || url === window.location.pathname) return;
-  window.location.href = url;
+  if (window.location.pathname.startsWith("/api/oauth/google")) return;
+  window.location.href = getLoginUrl();
 };
 
 queryClient.getQueryCache().subscribe((event) => {
@@ -39,10 +38,18 @@ queryClient.getMutationCache().subscribe((event) => {
   }
 });
 
+function trpcHttpUrl(): string {
+  const base = import.meta.env.VITE_API_URL as string | undefined;
+  if (base?.trim()) {
+    return `${base.replace(/\/$/, "")}/api/trpc`;
+  }
+  return "/api/trpc";
+}
+
 const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: "/api/trpc",
+      url: trpcHttpUrl(),
       transformer: superjson,
       fetch(input, init) {
         return globalThis.fetch(input, {

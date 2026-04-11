@@ -1,12 +1,42 @@
+import type { Request, Response } from "express";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { getDb } from "./db";
 import { traceTrpcProcedure } from "./observability/braintrust";
+import { verifySessionToken, sessionCookieName } from "./auth/jwt-session";
+import { getUserById } from "./auth/upsert-google-user";
 
-export const createContext = async (opts: { req?: unknown; res?: unknown }) => {
+export const createContext = async (opts: {
+  req: Request;
+  res: Response;
+}) => {
   const db = getDb();
-  const userId = 1;
-  return { db, userId, ...opts };
+  const token = opts.req.cookies?.[sessionCookieName] as string | undefined;
+  const session = await verifySessionToken(token);
+
+  let userId: number | null = null;
+  let user: {
+    id: number;
+    name: string | null;
+    email: string | null;
+    role: string;
+  } | null = null;
+
+  if (session) {
+    const row = getUserById(db, session.uid);
+    if (row) {
+      userId = row.id;
+      user = row;
+    }
+  }
+
+  return {
+    db,
+    userId,
+    user,
+    req: opts.req,
+    res: opts.res,
+  };
 };
 
 export type Context = Awaited<ReturnType<typeof createContext>>;
@@ -16,13 +46,14 @@ const t = initTRPC.context<Context>().create({
 });
 
 export const router = t.router;
-const observabilityMiddleware = t.middleware(async ({ ctx, next, path, type }) =>
-  traceTrpcProcedure({
-    path,
-    type,
-    userId: ctx.userId ?? null,
-    execute: () => next(),
-  })
+const observabilityMiddleware = t.middleware(
+  async ({ ctx, next, path, type }) =>
+    traceTrpcProcedure({
+      path,
+      type,
+      userId: ctx.userId ?? null,
+      execute: () => next(),
+    })
 );
 
 export const publicProcedure = t.procedure.use(observabilityMiddleware);

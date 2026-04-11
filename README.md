@@ -81,11 +81,33 @@ Se você instalou o Braintrust via Vercel Integrations, configure no ambiente do
 No backend (`server/trpc.ts`) as procedures tRPC já estão instrumentadas.  
 Sem `BRAINTRUST_API_KEY`, a aplicação continua funcionando normalmente (observabilidade desativada).
 
-### Paciente vs equipe (login)
+### Login da equipe (Google OAuth)
 
-- **Pacientes / acompanhantes:** rotas públicas (`/questionarios`, `/tcle`, etc.) sem OAuth.
-- **Equipe clínica:** o botão “Entrar com conta” só aparece se existirem `VITE_OAUTH_PORTAL_URL` e `VITE_APP_ID` no build. Sem isso, o ecrã explica a configuração em vez de um botão que recarrega `/`.
-- **API em produção:** o deploy estático na Vercel não inclui o Express; é preciso expor `/api/trpc` (serverless, outro serviço ou proxy) para a equipa obter sessão via `auth.me`.
+Fluxo único: **Google OAuth 2.0** → callback em `/api/oauth/google/callback` → cookie de sessão (`cij_session`) → `auth.me` no tRPC.
+
+**Variáveis (ver também `.env.example`):**
+
+| Onde | Variável | Descrição |
+|------|-----------|-----------|
+| Frontend (build) | `VITE_GOOGLE_CLIENT_ID` | Client ID OAuth (Web); pode repetir o mesmo valor no servidor. |
+| Servidor | `GOOGLE_CLIENT_ID` | Igual ao Client ID. |
+| Servidor | `GOOGLE_CLIENT_SECRET` | **Secreto** — só no backend. |
+| Servidor | `SESSION_SECRET` | ≥32 caracteres em produção (assinatura JWT do cookie). |
+| Frontend (opcional) | `VITE_API_URL` | Se o React estiver noutro domínio que a API, URL base da API (ex. `https://api.exemplo.com`). |
+
+**Google Cloud Console** ([APIs e serviços → Credenciais](https://console.cloud.google.com/apis/credentials)):
+
+1. Criar **ID do cliente OAuth** → tipo **Aplicação Web**.
+2. **URIs de redirecionamento autorizados:** incluir  
+   `http://localhost:5173/api/oauth/google/callback` (dev com Vite),  
+   `http://localhost:3000/api/oauth/google/callback` (API direta),  
+   e o URL de produção, ex. `https://seu-dominio.vercel.app/api/oauth/google/callback` ou o domínio onde o **browser** vê a API.
+3. **Origens JavaScript autorizadas:** `http://localhost:5173`, origem de produção.
+
+**Pacientes / visitantes:** continuam a usar rotas públicas (`/questionarios`, `/tcle`, …) sem login.
+
+**Produção com um só processo Node:** após `npm run build`, `NODE_ENV=production` e `SERVE_STATIC` (predefinição: ativo) fazem o Express servir `dist/` e a API no mesmo host — adequado a **Railway**, **Render**, VM, etc.  
+**Vercel só com front estático:** o bundle não corre o Express nem SQLite nativo; use `VITE_API_URL` para apontar para uma API alojada noutro sítio ou mude o modelo de deploy.
 
 ---
 

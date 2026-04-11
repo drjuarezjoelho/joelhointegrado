@@ -1,4 +1,4 @@
-/** Cookie name for auth/session (e.g. used by OAuth callback). */
+/** Cookie name for auth/session (OAuth callback + JWT session). */
 export const COOKIE_NAME = "cij_session";
 
 /** One year in milliseconds (e.g. for cookie maxAge). */
@@ -7,34 +7,18 @@ export const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 /** Message returned by API when the user is not authenticated (401). */
 export const UNAUTHED_ERR_MSG = "UNAUTHORIZED";
 
-/** True when Vite env has OAuth portal + app id (login da equipe). */
+/**
+ * True when the client build includes a Google OAuth Web Client ID.
+ * Used only to mostrar o botão "Entrar com conta" (o servidor valida tudo).
+ */
 export function isOAuthConfigured(): boolean {
-  return Boolean(
-    import.meta.env.VITE_OAUTH_PORTAL_URL && import.meta.env.VITE_APP_ID
-  );
+  return Boolean(import.meta.env.VITE_GOOGLE_CLIENT_ID?.length);
 }
 
 /**
- * Generate login URL at runtime so redirect URI reflects the current origin.
- * Uses OAuth portal when VITE_OAUTH_PORTAL_URL and VITE_APP_ID are set.
- * If missing, returns "/" — evite usar como única ação de "entrar" (não muda de página na raiz).
+ * URL absoluta para iniciar OAuth Google (mesma origem → cookie de sessão).
  */
 export function getLoginUrl(): string {
-  const oauthPortalUrl = import.meta.env.VITE_OAUTH_PORTAL_URL;
-  const appId = import.meta.env.VITE_APP_ID;
-
-  if (!oauthPortalUrl || !appId) {
-    return "/";
-  }
-
-  const redirectUri = `${window.location.origin}/api/oauth/callback`;
-  const state = btoa(redirectUri);
-
-  const url = new URL(`${oauthPortalUrl}/app-auth`);
-  url.searchParams.set("appId", appId);
-  url.searchParams.set("redirectUri", redirectUri);
-  url.searchParams.set("state", state);
-  url.searchParams.set("type", "signIn");
-
-  return url.toString();
+  if (typeof window === "undefined") return "/api/oauth/google";
+  return `${window.location.origin}/api/oauth/google`;
 }
