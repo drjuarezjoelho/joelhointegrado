@@ -14,7 +14,7 @@ export const patientsRouter = router({
     const db = getDb();
     const rows = db
       .prepare(
-        `SELECT id, name, phone, email, surgeryDate, surgeryType
+        `SELECT id, name, phone, email, surgeryDate, surgeryType, age, gender
          FROM patients
          WHERE userId = ?
          ORDER BY (surgeryDate IS NULL) ASC, surgeryDate DESC, id DESC
@@ -27,6 +27,8 @@ export const patientsRouter = router({
       email: string | null;
       surgeryDate: string | null;
       surgeryType: string | null;
+      age: number | null;
+      gender: string | null;
     }>;
     return rows.map((r) => ({
       id: r.id,
@@ -35,6 +37,11 @@ export const patientsRouter = router({
       email: r.email ?? null,
       surgeryDate: r.surgeryDate ? new Date(r.surgeryDate) : null,
       surgeryType: r.surgeryType ?? null,
+      age: r.age ?? null,
+      gender:
+        r.gender === "M" || r.gender === "F" || r.gender === "Outro"
+          ? r.gender
+          : null,
     }));
   }),
 

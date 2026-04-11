@@ -42,11 +42,19 @@ const SidebarProvider = ({
   );
 };
 
-const Sidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
+type SidebarProps = React.HTMLAttributes<HTMLDivElement> & {
+  /** shadcn-style: usado como data-attribute para estilos */
+  collapsible?: "icon" | "none" | "offcanvas" | string;
+  disableTransition?: boolean;
+};
+
+const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
+  ({ className, collapsible, disableTransition, ...props }, ref) => (
     <div
       ref={ref}
       data-sidebar="sidebar"
+      data-collapsible={collapsible}
+      data-disable-transition={disableTransition ? "true" : undefined}
       className={cn("flex h-full w-full flex-col bg-sidebar text-sidebar-foreground", className)}
       {...props}
     />

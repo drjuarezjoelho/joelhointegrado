@@ -40,8 +40,8 @@ import {
 } from "recharts";
 import { Activity, Info, Stethoscope } from "lucide-react";
 
-const summary = auditSummary as SurgicalAuditSummary;
-const cijReport = cijConsolidated as CijConsolidatedReport;
+const summary = auditSummary as unknown as SurgicalAuditSummary;
+const cijReport = cijConsolidated as unknown as CijConsolidatedReport;
 
 function entriesToChartData(
   rec: Record<string, number> | undefined,
