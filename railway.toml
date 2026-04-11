@@ -5,8 +5,8 @@
 
 [build]
 builder = "RAILPACK"
-# rm -rf node_modules evita árvore suja em rebuilds com cache; cache Vite está em .vite-cache (vite.config)
-buildCommand = "rm -rf node_modules && npm ci && npm run build"
+# Um único script npm — se o painel Railway tiver comando antigo, defina: npm run build:deploy
+buildCommand = "npm run build:deploy"
 
 [deploy]
 startCommand = "npm start"

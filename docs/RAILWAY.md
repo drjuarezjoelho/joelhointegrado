@@ -9,6 +9,17 @@ O [`Dockerfile`](../deploy/Dockerfile) **não** está na raiz de propósito: a R
 2. **New project** → **Deploy from GitHub repo** → escolha `drjuarezjoelho/joelhointegrado` (branch `main`).
 3. A Railway deteta Node e aplica o `railway.toml`.
 
+### Comando de build (se o deploy falhar com `EBUSY` em `node_modules/.vite`)
+
+No log do deploy, o comando deve ser **`npm run build:deploy`** (apaga `node_modules` antes do `npm ci` e usa cache Vite em `.vite-cache`).
+
+Se vir apenas **`npm ci && npm run build`**, o painel está a **sobrescrever** o repositório:
+
+1. Serviço → **Settings** → **Build** (ou **Deploy** → **Build**).
+2. **Apague** o “Custom Build Command” / deixe em branco **ou** escreva exatamente: `npm run build:deploy`.
+3. Confirme que **Root Directory** está vazio (raiz do repo) — se apontar para uma pasta errada, o `railway.toml` não é lido.
+4. **Redeploy**.
+
 ## 2. Variáveis de ambiente (obrigatórias)
 
 No serviço → **Variables** (o mesmo valor pode repetir-se onde indicado):

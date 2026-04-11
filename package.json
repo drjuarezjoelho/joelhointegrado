@@ -6,6 +6,7 @@
     "dev": "npx vite",
     "dev:all": "concurrently -n api,web -c green,cyan \"npm run server\" \"npm run dev\"",
     "build": "npx vite build",
+    "build:deploy": "node scripts/rm-node-modules.mjs && npm ci && npm run build",
     "preview": "vite preview",
     "server": "npx tsx server/index.ts",
     "start": "cross-env NODE_ENV=production SERVE_STATIC=1 npx tsx server/index.ts",
