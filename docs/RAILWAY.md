@@ -75,7 +75,7 @@ Sem volume, a base em `/app/data` pode perder-se entre deploys.
 
 | Sintoma | Causa provável |
 |---------|----------------|
-| `EBUSY` / `rmdir ... node_modules/.vite` no build | Cache do Vite estava dentro de `node_modules`; o projeto usa `.vite-cache` na raiz e `rm -rf node_modules` antes do `npm ci`. Faça **Redeploy** com o `main` atualizado. |
+| `EBUSY` / `rmdir ... node_modules/.vite` ou `.../.cache` | Ferramentas criam cache dentro de `node_modules`; o `npm ci` tenta apagar tudo e pode falhar. O script `build:deploy` corre `rm -rf node_modules` em Linux antes do `npm ci`. Atualize o `main`, faça **Redeploy**; se persistir, no serviço → **Settings** → **Clear build cache** (ou equivalente) e volte a fazer deploy. |
 | Build sem `VITE_GOOGLE_CLIENT_ID` | Botão “Entrar” não aparece ou OAuth incompleto — definir no **build** e voltar a fazer deploy. |
 | `redirect_uri_mismatch` | URI no Google Cloud não coincide **caracter a caracter** com o URL Railway. |
 | 502 / health falha | `npm start` ou `PORT`; confira logs do deploy. |
