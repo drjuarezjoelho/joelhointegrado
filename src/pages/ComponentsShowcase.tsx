@@ -1,3 +1,7 @@
+/**
+ * Galeria de componentes shadcn/ui — regenerada com `npx shadcn@latest add …`
+ * e composição manual. Rota: /componentes
+ */
 import {
   Accordion,
   AccordionContent,
@@ -40,20 +44,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -85,11 +75,6 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Input } from "@/components/ui/input";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
 import {
   Menubar,
@@ -114,11 +99,6 @@ import {
 } from "@/components/ui/popover";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
@@ -158,1255 +138,429 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTheme } from "@/contexts/ThemeContext";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import {
-  AlertCircle,
-  CalendarIcon,
-  Check,
-  Clock,
-  Moon,
-  Sun,
-  X,
-} from "lucide-react";
+import { Info, Moon, Sun } from "lucide-react";
 import { useState } from "react";
-import { toast as sonnerToast } from "sonner";
-import { AIChatBox, type Message } from "@/components/AIChatBox";
+import { toast } from "sonner";
+import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function ComponentsShowcase() {
   const { theme, toggleTheme } = useTheme();
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [datePickerDate, setDatePickerDate] = useState<Date>();
   const [progress, setProgress] = useState(33);
-  const [currentPage, setCurrentPage] = useState(2);
-  const [openCombobox, setOpenCombobox] = useState(false);
-  const [selectedFramework, setSelectedFramework] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-  const [dialogInput, setDialogInput] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const [chatMessages, setChatMessages] = useState<Message[]>([
-    { role: "system", content: "You are a helpful assistant." },
-  ]);
-  const [isChatLoading, setIsChatLoading] = useState(false);
-
-  const handleDialogSubmit = () => {
-    sonnerToast.success("Submitted successfully", {
-      description: `Input: ${dialogInput}`,
-    });
-    setDialogInput("");
-    setDialogOpen(false);
-  };
-
-  const handleDialogKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      handleDialogSubmit();
-    }
-  };
-
-  const handleChatSend = (content: string) => {
-    const newMessages: Message[] = [...chatMessages, { role: "user", content }];
-    setChatMessages(newMessages);
-    setIsChatLoading(true);
-    setTimeout(() => {
-      const aiResponse: Message = {
-        role: "assistant",
-        content: `This is a **demo response**. In a real app, you would call a tRPC mutation here.\n\nYour message was: "${content}"`,
-      };
-      setChatMessages([...newMessages, aiResponse]);
-      setIsChatLoading(false);
-    }, 1500);
-  };
+  const [sliderVal, setSliderVal] = useState([50]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <main className="container max-w-6xl mx-auto">
-        <div className="space-y-2 justify-between flex">
-          <h2 className="text-3xl font-bold tracking-tight mb-6">
-            Shadcn/ui Component Library
-          </h2>
-          <Button variant="outline" size="icon" onClick={toggleTheme}>
-            {theme === "light" ? (
-              <Moon className="h-5 w-5" />
-            ) : (
-              <Sun className="h-5 w-5" />
-            )}
-          </Button>
+    <DashboardLayout>
+      <div className="mx-auto max-w-5xl space-y-8 p-4 md:p-8">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight">
+                Galeria de componentes
+              </h1>
+              <p className="text-muted-foreground text-sm">
+                shadcn/ui (CLI) — uso de referência para o projeto C.I.J.
+              </p>
+            </div>
+            <Button variant="outline" size="sm" onClick={toggleTheme}>
+              {theme === "dark" ? (
+                <Sun className="size-4" />
+              ) : (
+                <Moon className="size-4" />
+              )}
+              Tema
+            </Button>
+          </div>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Início</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Componentes</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
 
-        <div className="space-y-12">
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Text Colors</h3>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Foreground (Default)
-                      </p>
-                      <p className="text-foreground text-lg">
-                        Default text color for main content
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Muted Foreground
-                      </p>
-                      <p className="text-muted-foreground text-lg">
-                        Muted text for secondary information
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Primary
-                      </p>
-                      <p className="text-primary text-lg font-medium">
-                        Primary brand color text
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Secondary Foreground
-                      </p>
-                      <p className="text-secondary-foreground text-lg">
-                        Secondary action text color
-                      </p>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Accent Foreground
-                      </p>
-                      <p className="text-accent-foreground text-lg">
-                        Accent text for emphasis
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Destructive
-                      </p>
-                      <p className="text-destructive text-lg font-medium">
-                        Error or destructive action text
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Card Foreground
-                      </p>
-                      <p className="text-card-foreground text-lg">
-                        Text color on card backgrounds
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Popover Foreground
-                      </p>
-                      <p className="text-popover-foreground text-lg">
-                        Text color in popovers
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
+        <Tabs defaultValue="feedback" className="w-full">
+          <TabsList className="flex flex-wrap h-auto gap-1">
+            <TabsTrigger value="feedback">Feedback</TabsTrigger>
+            <TabsTrigger value="forms">Formulários</TabsTrigger>
+            <TabsTrigger value="overlay">Sobreposições</TabsTrigger>
+            <TabsTrigger value="data">Dados & navegação</TabsTrigger>
+          </TabsList>
 
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Color Combinations</h3>
+          <TabsContent value="feedback" className="space-y-6 mt-6">
             <Card>
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="bg-primary text-primary-foreground rounded-lg p-4">
-                    <p className="font-medium mb-1">Primary</p>
-                    <p className="text-sm opacity-90">
-                      Primary background with foreground text
-                    </p>
-                  </div>
-                  <div className="bg-secondary text-secondary-foreground rounded-lg p-4">
-                    <p className="font-medium mb-1">Secondary</p>
-                    <p className="text-sm opacity-90">
-                      Secondary background with foreground text
-                    </p>
-                  </div>
-                  <div className="bg-muted text-muted-foreground rounded-lg p-4">
-                    <p className="font-medium mb-1">Muted</p>
-                    <p className="text-sm opacity-90">
-                      Muted background with foreground text
-                    </p>
-                  </div>
-                  <div className="bg-accent text-accent-foreground rounded-lg p-4">
-                    <p className="font-medium mb-1">Accent</p>
-                    <p className="text-sm opacity-90">
-                      Accent background with foreground text
-                    </p>
-                  </div>
-                  <div className="bg-destructive text-destructive-foreground rounded-lg p-4">
-                    <p className="font-medium mb-1">Destructive</p>
-                    <p className="text-sm opacity-90">
-                      Destructive background with foreground text
-                    </p>
-                  </div>
-                  <div className="bg-card text-card-foreground rounded-lg p-4 border">
-                    <p className="font-medium mb-1">Card</p>
-                    <p className="text-sm opacity-90">
-                      Card background with foreground text
-                    </p>
-                  </div>
-                  <div className="bg-popover text-popover-foreground rounded-lg p-4 border">
-                    <p className="font-medium mb-1">Popover</p>
-                    <p className="text-sm opacity-90">
-                      Popover background with foreground text
-                    </p>
-                  </div>
-                  <div className="bg-background text-foreground rounded-lg p-4 border">
-                    <p className="font-medium mb-1">Background</p>
-                    <p className="text-sm opacity-90">
-                      Default background with foreground text
-                    </p>
-                  </div>
+              <CardHeader>
+                <CardTitle>Alertas e estado</CardTitle>
+                <CardDescription>Alert, Badge, Progress, Skeleton</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Alert>
+                  <Info className="size-4" />
+                  <AlertTitle>Informação</AlertTitle>
+                  <AlertDescription>
+                    Texto de apoio para alertas inline.
+                  </AlertDescription>
+                </Alert>
+                <div className="flex flex-wrap gap-2">
+                  <Badge>Default</Badge>
+                  <Badge variant="secondary">Secondary</Badge>
+                  <Badge variant="outline">Outline</Badge>
+                  <Badge variant="destructive">Destructive</Badge>
                 </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Buttons</h3>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-wrap gap-4">
-                  <Button>Default</Button>
-                  <Button variant="secondary">Secondary</Button>
-                  <Button variant="destructive">Destructive</Button>
-                  <Button variant="outline">Outline</Button>
-                  <Button variant="ghost">Ghost</Button>
-                  <Button variant="link">Link</Button>
-                  <Button size="sm">Small</Button>
-                  <Button size="lg">Large</Button>
-                  <Button size="icon">
-                    <Check className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Form Inputs</h3>
-            <Card>
-              <CardContent className="pt-6 space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="Email" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Type your message here."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Select</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a fruit" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="apple">Apple</SelectItem>
-                      <SelectItem value="banana">Banana</SelectItem>
-                      <SelectItem value="orange">Orange</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="terms" />
-                  <Label htmlFor="terms">Accept terms and conditions</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch id="airplane-mode" />
-                  <Label htmlFor="airplane-mode">Airplane Mode</Label>
-                </div>
-                <div className="space-y-2">
-                  <Label>Radio Group</Label>
-                  <RadioGroup defaultValue="option-one">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="option-one" id="option-one" />
-                      <Label htmlFor="option-one">Option One</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="option-two" id="option-two" />
-                      <Label htmlFor="option-two">Option Two</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-                <div className="space-y-2">
-                  <Label>Slider</Label>
-                  <Slider defaultValue={[50]} max={100} step={1} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Input OTP</Label>
-                  <InputOTP maxLength={6}>
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                </div>
-                <div className="space-y-2">
-                  <Label>Date Time Picker</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={`w-full justify-start text-left font-normal ${
-                          !datePickerDate && "text-muted-foreground"
-                        }`}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {datePickerDate ? (
-                          format(datePickerDate, "PPP HH:mm", { locale: ptBR })
-                        ) : (
-                          <span>Selecionar data e hora</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <div className="p-3 space-y-3">
-                        <Calendar
-                          mode="single"
-                          selected={datePickerDate}
-                          onSelect={setDatePickerDate}
-                        />
-                        <div className="border-t pt-3 space-y-2">
-                          <Label className="flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            Hora
-                          </Label>
-                          <div className="flex gap-2">
-                            <Input
-                              type="time"
-                              value={
-                                datePickerDate
-                                  ? format(datePickerDate, "HH:mm")
-                                  : "00:00"
-                              }
-                              onChange={(e) => {
-                                const [hours, minutes] =
-                                  e.target.value.split(":");
-                                const newDate = datePickerDate
-                                  ? new Date(datePickerDate)
-                                  : new Date();
-                                newDate.setHours(parseInt(hours ?? "0"));
-                                newDate.setMinutes(parseInt(minutes ?? "0"));
-                                setDatePickerDate(newDate);
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                  {datePickerDate && (
-                    <p className="text-sm text-muted-foreground">
-                      Selecionado:{" "}
-                      {format(datePickerDate, "dd/MM/yyyy HH:mm", {
-                        locale: ptBR,
-                      })}
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label>Searchable Dropdown</Label>
-                  <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={openCombobox}
-                        className="w-full justify-between"
-                      >
-                        {selectedFramework
-                          ? [
-                              { value: "react", label: "React" },
-                              { value: "vue", label: "Vue" },
-                              { value: "angular", label: "Angular" },
-                              { value: "svelte", label: "Svelte" },
-                              { value: "nextjs", label: "Next.js" },
-                              { value: "nuxt", label: "Nuxt" },
-                              { value: "remix", label: "Remix" },
-                            ].find((fw) => fw.value === selectedFramework)
-                              ?.label
-                          : "Selecionar framework..."}
-                        <CalendarIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command>
-                        <CommandInput placeholder="Buscar frameworks..." />
-                        <CommandList>
-                          <CommandEmpty>Nenhum framework encontrado</CommandEmpty>
-                          <CommandGroup>
-                            {[
-                              { value: "react", label: "React" },
-                              { value: "vue", label: "Vue" },
-                              { value: "angular", label: "Angular" },
-                              { value: "svelte", label: "Svelte" },
-                              { value: "nextjs", label: "Next.js" },
-                              { value: "nuxt", label: "Nuxt" },
-                              { value: "remix", label: "Remix" },
-                            ].map((framework) => (
-                              <CommandItem
-                                key={framework.value}
-                                value={framework.value}
-                                onSelect={(currentValue) => {
-                                  setSelectedFramework(
-                                    currentValue === selectedFramework
-                                      ? ""
-                                      : currentValue
-                                  );
-                                  setOpenCombobox(false);
-                                }}
-                              >
-                                <Check
-                                  className={`mr-2 h-4 w-4 ${
-                                    selectedFramework === framework.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  }`}
-                                />
-                                {framework.label}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  {selectedFramework && (
-                    <p className="text-sm text-muted-foreground">
-                      Selecionado:{" "}
-                      {
-                        [
-                          { value: "react", label: "React" },
-                          { value: "vue", label: "Vue" },
-                          { value: "angular", label: "Angular" },
-                          { value: "svelte", label: "Svelte" },
-                          { value: "nextjs", label: "Next.js" },
-                          { value: "nuxt", label: "Nuxt" },
-                          { value: "remix", label: "Remix" },
-                        ].find((fw) => fw.value === selectedFramework)?.label
-                      }
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="month" className="text-sm font-medium">
-                        Mês
-                      </Label>
-                      <Select
-                        value={selectedMonth}
-                        onValueChange={setSelectedMonth}
-                      >
-                        <SelectTrigger id="month">
-                          <SelectValue placeholder="MM" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from({ length: 12 }, (_, i) => i + 1).map(
-                            (month) => (
-                              <SelectItem
-                                key={month}
-                                value={month.toString().padStart(2, "0")}
-                              >
-                                {month.toString().padStart(2, "0")}
-                              </SelectItem>
-                            )
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="year" className="text-sm font-medium">
-                        Ano
-                      </Label>
-                      <Select
-                        value={selectedYear}
-                        onValueChange={setSelectedYear}
-                      >
-                        <SelectTrigger id="year">
-                          <SelectValue placeholder="AAAA" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from(
-                            { length: 10 },
-                            (_, i) => new Date().getFullYear() - 5 + i
-                          ).map((year) => (
-                            <SelectItem key={year} value={year.toString()}>
-                              {year}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  {selectedMonth && selectedYear && (
-                    <p className="text-sm text-muted-foreground">
-                      Selecionado: {selectedYear}/{selectedMonth}
-                    </p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Data Display</h3>
-            <Card>
-              <CardContent className="pt-6 space-y-6">
-                <div className="space-y-2">
-                  <Label>Badges</Label>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge>Default</Badge>
-                    <Badge variant="secondary">Secondary</Badge>
-                    <Badge variant="destructive">Destructive</Badge>
-                    <Badge variant="outline">Outline</Badge>
-                  </div>
-                </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Avatar</Label>
-                  <div className="flex gap-4">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <Avatar>
-                      <AvatarFallback>AB</AvatarFallback>
-                    </Avatar>
-                  </div>
-                </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Progress</Label>
+                <div className="space-y-2 max-w-md">
                   <Progress value={progress} />
                   <div className="flex gap-2">
                     <Button
+                      type="button"
+                      variant="secondary"
                       size="sm"
-                      onClick={() => setProgress(Math.max(0, progress - 10))}
+                      onClick={() =>
+                        setProgress((p) => (p >= 100 ? 0 : Math.min(100, p + 10)))
+                      }
                     >
-                      -10
+                      +10%
                     </Button>
                     <Button
+                      type="button"
+                      variant="outline"
                       size="sm"
-                      onClick={() => setProgress(Math.min(100, progress + 10))}
+                      onClick={() => toast.success("Toast de exemplo")}
                     >
-                      +10
+                      Toast
                     </Button>
                   </div>
                 </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Skeleton</Label>
-                  <div className="space-y-2">
+                <div className="flex gap-4">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div className="space-y-2 flex-1">
                     <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-4 w-4/5" />
                   </div>
                 </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Pagination</Label>
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setCurrentPage(Math.max(1, currentPage - 1));
-                          }}
-                        />
-                      </PaginationItem>
-                      {[1, 2, 3, 4, 5].map((page) => (
-                        <PaginationItem key={page}>
-                          <PaginationLink
-                            href="#"
-                            isActive={currentPage === page}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setCurrentPage(page);
-                            }}
-                          >
-                            {page}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ))}
-                      <PaginationItem>
-                        <PaginationNext
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setCurrentPage(Math.min(5, currentPage + 1));
-                          }}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                  <p className="text-sm text-muted-foreground text-center">
-                    Página atual: {currentPage}
-                  </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="forms" className="space-y-6 mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Controlo</CardTitle>
+                <CardDescription>
+                  Botões, campos, interruptores e seleção
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex flex-wrap gap-2">
+                  <Button>Default</Button>
+                  <Button variant="secondary">Secondary</Button>
+                  <Button variant="outline">Outline</Button>
+                  <Button variant="ghost">Ghost</Button>
+                  <Button variant="destructive">Destructive</Button>
+                  <Button size="sm">Small</Button>
+                  <Button size="lg">Large</Button>
                 </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Table</Label>
-                  <Table>
-                    <TableCaption>Lista de faturas recentes.</TableCaption>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[100px]">Fatura</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Método</TableHead>
-                        <TableHead className="text-right">Valor</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell className="font-medium">INV001</TableCell>
-                        <TableCell>Pago</TableCell>
-                        <TableCell>Cartão</TableCell>
-                        <TableCell className="text-right">R$ 250,00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">INV002</TableCell>
-                        <TableCell>Pendente</TableCell>
-                        <TableCell>PayPal</TableCell>
-                        <TableCell className="text-right">R$ 150,00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">INV003</TableCell>
-                        <TableCell>Não pago</TableCell>
-                        <TableCell>Transferência</TableCell>
-                        <TableCell className="text-right">R$ 350,00</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input id="email" type="email" placeholder="email@exemplo.pt" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="area">Notas</Label>
+                    <Textarea id="area" placeholder="Texto longo…" rows={3} />
+                  </div>
                 </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Menubar</Label>
+                <div className="flex flex-wrap items-center gap-6">
+                  <div className="flex items-center gap-2">
+                    <Checkbox id="c1" />
+                    <Label htmlFor="c1">Checkbox</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch id="s1" />
+                    <Label htmlFor="s1">Switch</Label>
+                  </div>
+                </div>
+                <RadioGroup defaultValue="a" className="flex gap-4">
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="a" id="r1" />
+                    <Label htmlFor="r1">Opção A</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="b" id="r2" />
+                    <Label htmlFor="r2">Opção B</Label>
+                  </div>
+                </RadioGroup>
+                <div className="space-y-2 max-w-xs">
+                  <Label>Slider</Label>
+                  <Slider
+                    value={sliderVal}
+                    onValueChange={setSliderVal}
+                    max={100}
+                    step={1}
+                  />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Toggle aria-label="Toggle">B</Toggle>
+                  <ToggleGroup type="single" defaultValue="left">
+                    <ToggleGroupItem value="left">Esquerda</ToggleGroupItem>
+                    <ToggleGroupItem value="right">Direita</ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+                <div className="space-y-2 max-w-xs">
+                  <Label>Selecionar</Label>
+                  <Select defaultValue="um">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Escolher" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="um">Um</SelectItem>
+                      <SelectItem value="dois">Dois</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="overlay" className="space-y-6 mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Diálogos e menus</CardTitle>
+                <CardDescription>
+                  Dialog, Drawer, Sheet, Popover, Tooltip, HoverCard, Dropdown
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-wrap gap-3">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">Dialog</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Título</DialogTitle>
+                      <DialogDescription>
+                        Conteúdo modal acessível.
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <Button variant="outline">Drawer</Button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <DrawerHeader>
+                      <DrawerTitle>Painel</DrawerTitle>
+                      <DrawerDescription>
+                        Drawer (vaul) para mobile / painéis inferiores.
+                      </DrawerDescription>
+                    </DrawerHeader>
+                    <DrawerFooter>
+                      <DrawerClose asChild>
+                        <Button variant="outline">Fechar</Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="outline">Sheet</Button>
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle>Folha lateral</SheetTitle>
+                      <SheetDescription>Conteúdo adicional.</SheetDescription>
+                    </SheetHeader>
+                  </SheetContent>
+                </Sheet>
+
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline">Data</Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={setDate}
+                    />
+                  </PopoverContent>
+                </Popover>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline">Tooltip</Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Dica contextual</TooltipContent>
+                </Tooltip>
+
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <Button variant="link">Hover card</Button>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-80">
+                    <p className="text-sm">Pré-visualização ao pairar.</p>
+                  </HoverCardContent>
+                </HoverCard>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">Menu ▾</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => toast.message("Um")}>
+                      Opção 1
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>Opção 2</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="data" className="space-y-6 mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Tabelas e listas</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <Table>
+                  <TableCaption>Legenda da tabela.</TableCaption>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nome</TableHead>
+                      <TableHead>Estado</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Exemplo A</TableCell>
+                      <TableCell>
+                        <Badge>OK</Badge>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Exemplo B</TableCell>
+                      <TableCell>Pendente</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="1">
+                    <AccordionTrigger>Secção 1</AccordionTrigger>
+                    <AccordionContent>Conteúdo expansível.</AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="2">
+                    <AccordionTrigger>Secção 2</AccordionTrigger>
+                    <AccordionContent>Mais conteúdo.</AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+
+                <Collapsible>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" size="sm">
+                      Colapsável
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="text-sm text-muted-foreground pt-2">
+                    Texto mostrado quando expandido.
+                  </CollapsibleContent>
+                </Collapsible>
+
+                <div className="flex items-center gap-4">
+                  <Avatar>
+                    <AvatarImage src="" alt="" />
+                    <AvatarFallback>CJ</AvatarFallback>
+                  </Avatar>
+                  <Separator orientation="vertical" className="h-8" />
+                  <AspectRatio ratio={16 / 9} className="bg-muted w-40 rounded-md" />
+                </div>
+
+                <div>
+                  <p className="text-sm font-medium mb-2">Menubar</p>
                   <Menubar>
                     <MenubarMenu>
-                      <MenubarTrigger>Arquivo</MenubarTrigger>
+                      <MenubarTrigger>Ficheiro</MenubarTrigger>
                       <MenubarContent>
-                        <MenubarItem>Nova aba</MenubarItem>
-                        <MenubarItem>Nova janela</MenubarItem>
+                        <MenubarItem>Novo</MenubarItem>
                         <MenubarSeparator />
-                        <MenubarItem>Compartilhar</MenubarItem>
-                        <MenubarSeparator />
-                        <MenubarItem>Imprimir</MenubarItem>
-                      </MenubarContent>
-                    </MenubarMenu>
-                    <MenubarMenu>
-                      <MenubarTrigger>Editar</MenubarTrigger>
-                      <MenubarContent>
-                        <MenubarItem>Desfazer</MenubarItem>
-                        <MenubarItem>Refazer</MenubarItem>
-                      </MenubarContent>
-                    </MenubarMenu>
-                    <MenubarMenu>
-                      <MenubarTrigger>Ver</MenubarTrigger>
-                      <MenubarContent>
-                        <MenubarItem>Recarregar</MenubarItem>
-                        <MenubarItem>Forçar recarregar</MenubarItem>
+                        <MenubarItem>Sair</MenubarItem>
                       </MenubarContent>
                     </MenubarMenu>
                   </Menubar>
                 </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Breadcrumb</Label>
-                  <Breadcrumb>
-                    <BreadcrumbList>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink href="/">Início</BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbLink href="/components">
-                          Componentes
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </BreadcrumbList>
-                  </Breadcrumb>
+
+                <div>
+                  <p className="text-sm font-medium mb-2">Paginação</p>
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious href="#" onClick={(e) => e.preventDefault()} />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#" isActive>
+                          1
+                        </PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#">2</PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationNext href="#" onClick={(e) => e.preventDefault()} />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
                 </div>
-              </CardContent>
-            </Card>
-          </section>
 
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Alerts</h3>
-            <div className="space-y-4">
-              <Alert>
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Atenção!</AlertTitle>
-                <AlertDescription>
-                  Você pode adicionar componentes ao app usando o cli.
-                </AlertDescription>
-              </Alert>
-              <Alert variant="destructive">
-                <X className="h-4 w-4" />
-                <AlertTitle>Erro</AlertTitle>
-                <AlertDescription>
-                  Sua sessão expirou. Faça login novamente.
-                </AlertDescription>
-              </Alert>
-            </div>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Tabs</h3>
-            <Tabs defaultValue="account" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="account">Conta</TabsTrigger>
-                <TabsTrigger value="password">Senha</TabsTrigger>
-                <TabsTrigger value="settings">Configurações</TabsTrigger>
-              </TabsList>
-              <TabsContent value="account">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Conta</CardTitle>
-                    <CardDescription>
-                      Altere os dados da sua conta aqui.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <div className="space-y-1">
-                      <Label htmlFor="name">Nome</Label>
-                      <Input id="name" defaultValue="Pedro Duarte" />
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button>Salvar alterações</Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
-              <TabsContent value="password">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Senha</CardTitle>
-                    <CardDescription>
-                      Altere sua senha aqui.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <div className="space-y-1">
-                      <Label htmlFor="current">Senha atual</Label>
-                      <Input id="current" type="password" />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="new">Nova senha</Label>
-                      <Input id="new" type="password" />
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button>Salvar senha</Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
-              <TabsContent value="settings">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Configurações</CardTitle>
-                    <CardDescription>
-                      Gerencie suas configurações aqui.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      Conteúdo de configurações.
-                    </p>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Accordion</h3>
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>É acessível?</AccordionTrigger>
-                <AccordionContent>
-                  Sim. Segue o padrão de design WAI-ARIA.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>É estilizado?</AccordionTrigger>
-                <AccordionContent>
-                  Sim. Vem com estilos padrão que combinam com os outros
-                  componentes.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>É animado?</AccordionTrigger>
-                <AccordionContent>
-                  Sim. É animado por padrão, mas você pode desativar se preferir.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Collapsible</h3>
-            <Collapsible>
-              <Card>
-                <CardHeader>
-                  <CollapsibleTrigger asChild>
-                    <Button variant="ghost" className="w-full justify-between">
-                      <CardTitle>@peduarte favoritou 3 repositórios</CardTitle>
-                    </Button>
-                  </CollapsibleTrigger>
-                </CardHeader>
-                <CollapsibleContent>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                        @radix-ui/primitives
-                      </div>
-                      <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                        @radix-ui/colors
-                      </div>
-                      <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                        @stitches/react
-                      </div>
-                    </div>
-                  </CardContent>
-                </CollapsibleContent>
-              </Card>
-            </Collapsible>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Overlays</h3>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-wrap gap-4">
-                  <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button variant="outline">Abrir Dialog</Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Teste de input</DialogTitle>
-                        <DialogDescription>
-                          Digite algo abaixo. Enter para enviar.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="dialog-input">Input</Label>
-                          <Input
-                            id="dialog-input"
-                            placeholder="Digite algo..."
-                            value={dialogInput}
-                            onChange={(e) => setDialogInput(e.target.value)}
-                            onKeyDown={handleDialogKeyDown}
-                            autoFocus
-                          />
-                        </div>
-                      </div>
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          onClick={() => setDialogOpen(false)}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button onClick={handleDialogSubmit}>Enviar</Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <Button variant="outline">Abrir Sheet</Button>
-                    </SheetTrigger>
-                    <SheetContent>
-                      <SheetHeader>
-                        <SheetTitle>Editar perfil</SheetTitle>
-                        <SheetDescription>
-                          Altere seu perfil aqui. Clique em salvar quando
-                          terminar.
-                        </SheetDescription>
-                      </SheetHeader>
-                    </SheetContent>
-                  </Sheet>
-
-                  <Drawer>
-                    <DrawerTrigger asChild>
-                      <Button variant="outline">Abrir Drawer</Button>
-                    </DrawerTrigger>
-                    <DrawerContent>
-                      <DrawerHeader>
-                        <DrawerTitle>Tem certeza?</DrawerTitle>
-                        <DrawerDescription>
-                          Esta ação não pode ser desfeita.
-                        </DrawerDescription>
-                      </DrawerHeader>
-                      <DrawerFooter>
-                        <Button>Enviar</Button>
-                        <DrawerClose asChild>
-                          <Button variant="outline">Cancelar</Button>
-                        </DrawerClose>
-                      </DrawerFooter>
-                    </DrawerContent>
-                  </Drawer>
-
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline">Abrir Popover</Button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <div className="space-y-2">
-                        <h4 className="font-medium leading-none">Dimensões</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Defina as dimensões da camada.
-                        </p>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline">Passe o mouse</Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Adicionar à biblioteca</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Menus</h3>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-wrap gap-4">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline">Dropdown Menu</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>Perfil</DropdownMenuItem>
-                      <DropdownMenuItem>Faturamento</DropdownMenuItem>
-                      <DropdownMenuItem>Equipe</DropdownMenuItem>
-                      <DropdownMenuItem>Assinatura</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-
-                  <ContextMenu>
-                    <ContextMenuTrigger asChild>
-                      <Button variant="outline">Clique direito aqui</Button>
-                    </ContextMenuTrigger>
-                    <ContextMenuContent>
-                      <ContextMenuItem>Perfil</ContextMenuItem>
-                      <ContextMenuItem>Faturamento</ContextMenuItem>
-                      <ContextMenuItem>Equipe</ContextMenuItem>
-                      <ContextMenuItem>Assinatura</ContextMenuItem>
-                    </ContextMenuContent>
-                  </ContextMenu>
-
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <Button variant="outline">Hover Card</Button>
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      <div className="space-y-2">
-                        <h4 className="text-sm font-semibold">@nextjs</h4>
-                        <p className="text-sm">
-                          The React Framework – criado e mantido por @vercel.
-                        </p>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Calendar</h3>
-            <Card>
-              <CardContent className="pt-6 flex justify-center">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  className="rounded-md border"
-                />
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Carousel</h3>
-            <Card>
-              <CardContent className="pt-6">
-                <Carousel className="w-full max-w-xs mx-auto">
-                  <CarouselContent>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <CarouselItem key={index}>
-                        <div className="p-1">
-                          <Card>
-                            <CardContent className="flex aspect-square items-center justify-center p-6">
-                              <span className="text-4xl font-semibold">
-                                {index + 1}
-                              </span>
-                            </CardContent>
-                          </Card>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Toggle</h3>
-            <Card>
-              <CardContent className="pt-6 space-y-4">
-                <div className="space-y-2">
-                  <Label>Toggle</Label>
-                  <div className="flex gap-2">
-                    <Toggle aria-label="Toggle bold">
-                      <span className="font-bold">B</span>
-                    </Toggle>
-                    <Toggle aria-label="Toggle italic">
-                      <span className="italic">I</span>
-                    </Toggle>
-                    <Toggle aria-label="Toggle underline">
-                      <span className="underline">U</span>
-                    </Toggle>
+                <div>
+                  <p className="text-sm font-medium mb-2">Carousel</p>
+                  <div className="relative px-12">
+                    <Carousel className="w-full max-w-md mx-auto">
+                      <CarouselContent>
+                        {["Slide 1", "Slide 2", "Slide 3"].map((label, i) => (
+                          <CarouselItem key={i}>
+                            <Card>
+                              <CardContent className="flex h-36 items-center justify-center p-6">
+                                <span className="text-lg font-medium">{label}</span>
+                              </CardContent>
+                            </Card>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious />
+                      <CarouselNext />
+                    </Carousel>
                   </div>
                 </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Toggle Group</Label>
-                  <ToggleGroup type="multiple">
-                    <ToggleGroupItem value="bold" aria-label="Toggle bold">
-                      <span className="font-bold">B</span>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="italic" aria-label="Toggle italic">
-                      <span className="italic">I</span>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem
-                      value="underline"
-                      aria-label="Toggle underline"
-                    >
-                      <span className="underline">U</span>
-                    </ToggleGroupItem>
-                  </ToggleGroup>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
 
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Layout Components</h3>
-            <Card>
-              <CardContent className="pt-6 space-y-6">
-                <div className="space-y-2">
-                  <Label>Aspect Ratio (16/9)</Label>
-                  <AspectRatio ratio={16 / 9} className="bg-muted">
-                    <div className="flex h-full items-center justify-center">
-                      <p className="text-muted-foreground">Aspect Ratio 16:9</p>
-                    </div>
-                  </AspectRatio>
-                </div>
-                <Separator />
-                <div className="space-y-2">
-                  <Label>Scroll Area</Label>
-                  <ScrollArea className="h-[200px] w-full rounded-md border overflow-hidden">
-                    <div className="p-4">
-                      <div className="space-y-4">
-                        {Array.from({ length: 20 }).map((_, i) => (
-                          <div key={i} className="text-sm">
-                            Item {i + 1}: Área de conteúdo rolável
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                <div>
+                  <p className="text-sm font-medium mb-2">Scroll</p>
+                  <ScrollArea className="h-24 w-full rounded-md border p-4">
+                    {Array.from({ length: 12 }).map((_, i) => (
+                      <p key={i} className="text-sm">
+                        Linha {i + 1} — conteúdo com scroll.
+                      </p>
+                    ))}
                   </ScrollArea>
                 </div>
               </CardContent>
+              <CardFooter className="text-xs text-muted-foreground">
+                Componentes gerados/atualizados com{" "}
+                <code className="rounded bg-muted px-1">npx shadcn@latest add</code>.
+              </CardFooter>
             </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Resizable Panels</h3>
-            <Card>
-              <CardContent className="pt-6">
-                <ResizablePanelGroup
-                  direction="horizontal"
-                  className="min-h-[200px] rounded-lg border"
-                >
-                  <ResizablePanel defaultSize={50}>
-                    <div className="flex h-full items-center justify-center p-6">
-                      <span className="font-semibold">Painel Um</span>
-                    </div>
-                  </ResizablePanel>
-                  <ResizableHandle />
-                  <ResizablePanel defaultSize={50}>
-                    <div className="flex h-full items-center justify-center p-6">
-                      <span className="font-semibold">Painel Dois</span>
-                    </div>
-                  </ResizablePanel>
-                </ResizablePanelGroup>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">Toast</h3>
-            <Card>
-              <CardContent className="pt-6 space-y-4">
-                <div className="space-y-2">
-                  <Label>Sonner Toast</Label>
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        sonnerToast.success("Operação concluída", {
-                          description: "Suas alterações foram salvas",
-                        });
-                      }}
-                    >
-                      Sucesso
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        sonnerToast.error("Operação falhou", {
-                          description:
-                            "Não foi possível completar. Tente novamente.",
-                        });
-                      }}
-                    >
-                      Erro
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        sonnerToast.info("Informação", {
-                          description: "Esta é uma mensagem informativa",
-                        });
-                      }}
-                    >
-                      Info
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        sonnerToast.warning("Aviso", {
-                          description: "Note o impacto desta operação",
-                        });
-                      }}
-                    >
-                      Aviso
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        sonnerToast.loading("Carregando", {
-                          description: "Aguarde",
-                        });
-                      }}
-                    >
-                      Loading
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        const promise = new Promise((resolve) =>
-                          setTimeout(resolve, 2000)
-                        );
-                        sonnerToast.promise(promise, {
-                          loading: "Processando...",
-                          success: "Concluído!",
-                          error: "Falhou",
-                        });
-                      }}
-                    >
-                      Promise
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-4">
-            <h3 className="text-2xl font-semibold">AI ChatBox</h3>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <div className="text-sm text-muted-foreground">
-                    <p>
-                      Interface de chat pronta que integra com o sistema de LLM.
-                      Markdown, auto-scroll e estados de carregamento.
-                    </p>
-                    <p className="mt-2">
-                      Demo com respostas simuladas. No app real, conecte a uma
-                      mutation tRPC.
-                    </p>
-                  </div>
-                  <AIChatBox
-                    messages={chatMessages}
-                    onSendMessage={handleChatSend}
-                    isLoading={isChatLoading}
-                    placeholder="Envie uma mensagem..."
-                    height="500px"
-                    emptyStateMessage="Como posso ajudar?"
-                    suggestedPrompts={[
-                      "O que é React?",
-                      "Explique TypeScript",
-                      "Como usar tRPC?",
-                      "Boas práticas em desenvolvimento web",
-                    ]}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-        </div>
-      </main>
-
-      <footer className="border-t py-6 mt-12">
-        <div className="container text-center text-sm text-muted-foreground">
-          <p>Shadcn/ui Component Showcase</p>
-        </div>
-      </footer>
-    </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </DashboardLayout>
   );
 }

@@ -19,6 +19,7 @@ import PatientScores from "./pages/PatientScores";
 import Reminders from "./pages/Reminders";
 import Analytics from "./pages/Analytics";
 import SurgicalAudit from "./pages/SurgicalAudit";
+import ComponentsShowcase from "./pages/ComponentsShowcase";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -40,6 +41,7 @@ function Router() {
       <Route path={"/lembretes"} component={Reminders} />
       <Route path={"/analytics"} component={Analytics} />
       <Route path={"/auditoria-cirurgica"} component={SurgicalAudit} />
+      <Route path={"/componentes"} component={ComponentsShowcase} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
