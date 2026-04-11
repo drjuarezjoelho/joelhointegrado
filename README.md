@@ -65,6 +65,7 @@ Acesse **http://localhost:5173**. O front consome a API em `/api/trpc` (proxy co
 | `npm run dev` | Frontend em modo desenvolvimento |
 | `npm run dev:all` | Frontend + API local em um comando |
 | `npm run server` | Backend Express + tRPC |
+| `npm start` | Produção: API + ficheiros estáticos (`dist/`) no mesmo processo |
 | `npm run build` | Build de produção (front) |
 | `npm run db:push` | Aplica schema no SQLite |
 | `npm run db:studio` | Drizzle Studio (visualizar banco) |
@@ -108,6 +109,20 @@ Fluxo único: **Google OAuth 2.0** → callback em `/api/oauth/google/callback` 
 
 **Produção com um só processo Node:** após `npm run build`, `NODE_ENV=production` e `SERVE_STATIC` (predefinição: ativo) fazem o Express servir `dist/` e a API no mesmo host — adequado a **Railway**, **Render**, VM, etc.  
 **Vercel só com front estático:** o bundle não corre o Express nem SQLite nativo; use `VITE_API_URL` para apontar para uma API alojada noutro sítio ou mude o modelo de deploy.
+
+### Deploy num único servidor (recomendado para API + SQLite)
+
+Na plataforma (Railway, Render, VPS), defina as variáveis de ambiente e use **build** + **start**:
+
+```bash
+npm ci
+npm run build
+npm start
+```
+
+O script `npm start` define `NODE_ENV=production` e serve o `dist/` pelo Express (`SERVE_STATIC=1`). Confirme que o **health check** responde: `GET /api/health` → `{ "ok": true, ... }`.
+
+**Importante:** `VITE_*` é aplicado no **build**; configure `VITE_GOOGLE_CLIENT_ID` (e `VITE_API_URL` se precisar) nos secrets de **build** da plataforma, não só em runtime.
 
 ---
 

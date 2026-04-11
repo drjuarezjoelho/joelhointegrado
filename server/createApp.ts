@@ -23,6 +23,10 @@ export function createApp(): express.Express {
   app.use(cookieParser());
   app.use(express.json());
 
+  app.get("/api/health", (_req, res) => {
+    res.json({ ok: true, ts: new Date().toISOString() });
+  });
+
   mountGoogleOAuthRoutes(app);
 
   app.use(
