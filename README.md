@@ -124,6 +124,14 @@ O script `npm start` define `NODE_ENV=production` e serve o `dist/` pelo Express
 
 **Importante:** `VITE_*` é aplicado no **build**; configure `VITE_GOOGLE_CLIENT_ID` (e `VITE_API_URL` se precisar) nos secrets de **build** da plataforma, não só em runtime.
 
+Ficheiros incluídos no repositório:
+
+| Ficheiro | Uso |
+|----------|-----|
+| `railway.toml` | [Railway](https://railway.app): build `npm ci && npm run build`, start `npm start`, health `/api/health`. |
+| `render.yaml` | [Render](https://render.com): Blueprint com os mesmos comandos. |
+| `Dockerfile` | Imagem própria; ver comentários no ficheiro para `docker build` / volume SQLite em `/data`. |
+
 ---
 
 ## Documentação

@@ -1,0 +1,13 @@
+# Railway — https://railway.app
+# Ligue o repositório, defina variáveis (GOOGLE_*, SESSION_SECRET, VITE_GOOGLE_CLIENT_ID no build).
+# Volume opcional: monte em /app/data para SQLite persistente e defina SQLITE_DB_PATH=/app/data/cij.db
+
+[build]
+builder = "nixpacks"
+buildCommand = "npm ci && npm run build"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"

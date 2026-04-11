@@ -1,0 +1,16 @@
+# Render — New → Blueprint → este repositório
+# Defina na UI: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SESSION_SECRET,
+# VITE_GOOGLE_CLIENT_ID (Build + Runtime ou só Build conforme a UI).
+
+services:
+  - type: web
+    name: joelhointegrado
+    runtime: node
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SERVE_STATIC
+        value: "1"
