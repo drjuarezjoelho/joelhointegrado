@@ -1,8 +1,9 @@
 /**
- * Limpa artefactos antes de `npm ci` em CI (Linux).
- * - `fs.rmSync` pode falhar com EBUSY em `node_modules/.cache` / `.vite`;
- *   em Unix usamos `rm -rf`, mais fiável no Docker/Railway.
- * Não engolir erros: falhas aqui devem aparecer no log do deploy.
+ * Limpa artefactos antes de `npm ci` em CI (Linux / Railway).
+ *
+ * Em overlayfs (Docker/Railway), `rm -rf node_modules` pode falhar com
+ * "Device or resource busy" em `node_modules/.vite` — renomear para /tmp
+ * liberta o caminho de trabalho; o `rm` do lixo faz-se sobre outro prefixo.
  */
 import { execSync } from "node:child_process";
 import fs from "node:fs";
@@ -27,8 +28,28 @@ function main() {
     return;
   }
 
+  const sh = `
+set -eu
+rm -rf .vite-cache 2>/dev/null || true
+if [ ! -d node_modules ]; then
+  exit 0
+fi
+# Permissões + caches internos (overlayfs)
+chmod -R u+w node_modules 2>/dev/null || true
+rm -rf node_modules/.vite node_modules/.cache 2>/dev/null || true
+# Preferir mover para fora do overlay — liberta "node_modules" já
+TRASH="/tmp/cadastro-ci-nm-$$"
+mkdir -p /tmp
+if mv node_modules "$TRASH" 2>/dev/null; then
+  rm -rf "$TRASH" || true
+else
+  sleep 1
+  rm -rf node_modules || { sleep 2; rm -rf node_modules; }
+fi
+`;
+
   try {
-    execSync("rm -rf node_modules .vite-cache", { stdio: "inherit" });
+    execSync(sh, { stdio: "inherit", shell: "/bin/sh" });
   } catch {
     process.exit(1);
   }

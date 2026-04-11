@@ -9,14 +9,16 @@ O [`Dockerfile`](../deploy/Dockerfile) **não** está na raiz de propósito: a R
 2. **New project** → **Deploy from GitHub repo** → escolha `drjuarezjoelho/joelhointegrado` (branch `main`).
 3. A Railway deteta Node e aplica o `railway.toml`.
 
-### Comando de build (se o deploy falhar com `EBUSY` em `node_modules/.vite`)
+### Comando de build (se o deploy falhar com `EBUSY` / “Device or resource busy” em `node_modules/.vite`)
 
-No log do deploy, o comando deve ser **`npm run build:deploy`** (apaga `node_modules` antes do `npm ci` e usa cache Vite em `.vite-cache`).
+No log do deploy, o comando deve ser **`npm run build:deploy`** (script que limpa `node_modules` de forma segura e corre `npm ci` + `npm run build`).
 
-Se vir apenas **`npm ci && npm run build`**, o painel está a **sobrescrever** o repositório:
+**Não use** no painel o comando manual `rm -rf node_modules && npm ci && npm run build`: no overlay da Railway o `rm -rf` pode falhar em `node_modules/.vite` (“Device or resource busy”). O script do repo usa **`mv` para `/tmp`** quando necessário.
+
+Se vir **`npm ci && npm run build`** ou **`rm -rf node_modules && ...`** sem passar por `build:deploy`, o painel está a **sobrescrever** o repositório:
 
 1. Serviço → **Settings** → **Build** (ou **Deploy** → **Build**).
-2. **Apague** o “Custom Build Command” / deixe em branco **ou** escreva exatamente: `npm run build:deploy`.
+2. **Apague** o “Custom Build Command” / deixe em branco **ou** escreva **só**: `npm run build:deploy`.
 3. Confirme que **Root Directory** está vazio (raiz do repo) — se apontar para uma pasta errada, o `railway.toml` não é lido.
 4. **Redeploy**.
 
