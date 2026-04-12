@@ -66,6 +66,7 @@ const DEV_DASHBOARD_PATHS_NO_AUTH = new Set([
   "/auditoria-cirurgica",
   "/analytics",
   "/lembretes",
+  "/componentes",
 ]);
 
 export default function DashboardLayout({
