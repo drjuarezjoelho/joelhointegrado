@@ -44,6 +44,8 @@ Opcional:
 1. No serviço → **Settings** → **Networking** → **Generate domain** (ou ligue um domínio próprio).
 2. Anote o URL HTTPS (ex.: `https://joelhointegrado-production.up.railway.app`).
 
+**Domínio próprio (ex.: `www.drjuarezsebastian.com` na HostGator):** guia passo a passo em [DOMINIO-RAILWAY-HOSTGATOR.md](./DOMINIO-RAILWAY-HOSTGATOR.md).
+
 ## 4. Google Cloud — redirect URI
 
 Em [Credenciais OAuth](https://console.cloud.google.com/apis/credentials) → o seu cliente **Web** → **URIs de redirecionamento autorizados**, adicione **exatamente**:
