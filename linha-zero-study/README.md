@@ -74,3 +74,12 @@ npm run dev
 | 7 | Monitoração / estatística (somente leitura + export) | `data_monitor` |
 
 Ajuste nomes e e-mails em `COAUTHORS_JSON` (ver `docs/AUTH.md`).
+
+## Interface web + API
+
+```bash
+npm run dev          # API :3001 + Vite :5174
+npm run build && npm run start   # produção (API serve dist/)
+```
+
+Abra http://localhost:5174 — login com coautor do seed (`docs/AUTH.md`).
