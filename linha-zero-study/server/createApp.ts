@@ -1,7 +1,12 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { existsSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { attachUser } from "./middleware/auth";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { authRouter } from "./routes/auth";
 import { participantsRouter } from "./routes/participants";
 import { visitsRouter } from "./routes/visits";
@@ -28,6 +33,30 @@ export function createApp(): express.Express {
   app.use("/api/participants", participantsRouter);
   app.use("/api", visitsRouter);
   app.use("/api/export", exportRouter);
+
+  const serveStatic =
+    process.env.NODE_ENV === "production" &&
+    process.env.SERVE_STATIC !== "0";
+  if (serveStatic) {
+    const dist = path.join(__dirname, "../dist");
+    if (existsSync(dist)) {
+      const indexHtml = path.join(dist, "index.html");
+      app.use(express.static(dist));
+      app.use((req, res, next) => {
+        if (req.method !== "GET" && req.method !== "HEAD") {
+          next();
+          return;
+        }
+        if (req.path.startsWith("/api")) {
+          next();
+          return;
+        }
+        res.sendFile(indexHtml, (err) => {
+          if (err) next(err);
+        });
+      });
+    }
+  }
 
   app.use(
     (

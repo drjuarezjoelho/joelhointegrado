@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../db/index";
 import { participants, visits } from "../../drizzle/schema";
@@ -46,7 +46,24 @@ participantsRouter.get("/", async (_req: AuthedRequest, res) => {
     .select()
     .from(participants)
     .orderBy(desc(participants.updatedAt));
-  res.json({ participants: list });
+
+  const withT0 = await Promise.all(
+    list.map(async (p) => {
+      const t0Rows = await db
+        .select()
+        .from(visits)
+        .where(
+          and(eq(visits.participantId, p.id), eq(visits.timepoint, "T0"))
+        )
+        .limit(1);
+      return {
+        ...p,
+        visitT0: t0Rows[0] ?? null,
+      };
+    })
+  );
+
+  res.json({ participants: withT0 });
 });
 
 participantsRouter.get("/:id", async (req: AuthedRequest, res) => {
@@ -203,4 +220,34 @@ participantsRouter.patch("/:id", async (req: AuthedRequest, res) => {
   });
 
   res.json({ participant: updated[0] });
+});
+
+participantsRouter.delete("/:id", async (req: AuthedRequest, res) => {
+  if (req.user!.role !== "pi_admin") {
+    res.status(403).json({ error: "Apenas o PI pode excluir participantes" });
+    return;
+  }
+  const id = Number(req.params.id);
+  if (!Number.isFinite(id)) {
+    res.status(400).json({ error: "ID inválido" });
+    return;
+  }
+  const existing = await db
+    .select()
+    .from(participants)
+    .where(eq(participants.id, id))
+    .limit(1);
+  if (!existing[0]) {
+    res.status(404).json({ error: "Participante não encontrado" });
+    return;
+  }
+  await db.delete(participants).where(eq(participants.id, id));
+  await logAudit({
+    userId: req.user!.id,
+    action: "delete",
+    entityType: "participant",
+    entityId: String(id),
+    oldValue: existing[0].studyCode,
+  });
+  res.json({ ok: true });
 });
