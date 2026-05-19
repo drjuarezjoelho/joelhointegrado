@@ -37,6 +37,7 @@ import {
   FileText,
   Bell,
   ClipboardList,
+  FlaskConical,
 } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -53,6 +54,7 @@ const menuItems = [
     label: "Auditoria cirúrgica",
     path: "/auditoria-cirurgica",
   },
+  { icon: FlaskConical, label: "Linha Zero", path: "/linha-zero" },
   { icon: FileText, label: "TCLE (Pacientes)", path: "/tcle", external: true },
 ];
 
@@ -67,6 +69,7 @@ const DEV_DASHBOARD_PATHS_NO_AUTH = new Set([
   "/analytics",
   "/lembretes",
   "/componentes",
+  "/linha-zero",
 ]);
 
 export default function DashboardLayout({
