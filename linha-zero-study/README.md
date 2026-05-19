@@ -82,4 +82,5 @@ npm run dev          # API :3001 + Vite :5174
 npm run build && npm run start   # produção (API serve dist/)
 ```
 
-Abra http://localhost:5174 — login com coautor do seed (`docs/AUTH.md`).
+Abra http://localhost:5175 — login com coautor do seed (`docs/AUTH.md`).
+Nota: o cadastro-ci usa 5173/5174; o Linha Zero usa **5175** de propósito para não misturar.
